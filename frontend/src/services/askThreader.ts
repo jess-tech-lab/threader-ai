@@ -74,7 +74,7 @@ function generateFeedbackResponse(
   feedback: FocusArea,
   synthesis: SynthesisReportV2,
   query: string,
-  companyName: string
+  _companyName: string
 ): string {
   const segments = feedback.affectedSegments.slice(0, 2).join(' and ');
   const isSmallVolume = feedback.frequency <= 5;
@@ -146,7 +146,7 @@ What specifically are you trying to figure out?`;
 function generateGeneralResponse(
   synthesis: SynthesisReportV2,
   query: string,
-  companyName: string
+  _companyName: string
 ): string {
   // What do users love?
   if (query.includes('love') || query.includes('positive') || query.includes('strength') || query.includes('like')) {

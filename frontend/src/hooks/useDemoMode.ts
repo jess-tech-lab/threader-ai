@@ -4,11 +4,12 @@ import { sampleSynthesisV2 } from '@/data/sampleDataV2';
 import type { SynthesisReportV2 } from '@/types';
 import type { PipelineStage } from '@/components/dashboard/ImmersiveLoader';
 
-type DataSource = 'supabase' | 'demo-config' | 'none';
+type DataSource = 'supabase' | 'supabase-uuid' | 'demo-config' | 'none';
 type FetchStatus = 'idle' | 'loading' | 'polling' | 'success' | 'error' | 'no-data' | 'timeout';
 
 interface DemoState {
   companyName: string;
+  reportId: string | null;  // UUID if loaded by UUID
   synthesis: SynthesisReportV2 | null;
   status: FetchStatus;
   dataSource: DataSource;
@@ -24,6 +25,7 @@ interface DemoState {
 
 interface UseDemoModeReturn extends DemoState {
   isDemoMode: boolean;
+  isUuidMode: boolean;  // True if loaded by UUID
   isLoading: boolean;
   retry: () => void;
   refetch: () => void;
@@ -32,18 +34,28 @@ interface UseDemoModeReturn extends DemoState {
   manualCheck: () => void;
 }
 
+// Props for when UUID is passed from router
+export interface UseDemoModeProps {
+  reportUuid?: string;
+}
+
 const POLL_INTERVAL = 3000; // 3 seconds
 const MAX_POLL_COUNT = 20; // 20 * 3s = 60 seconds max
 const INITIAL_FETCH_TIMEOUT = 5000; // 5 seconds for initial fetch
 
 /**
  * Hook to detect and handle public demo mode with polling support
- * Checks for ?company=NAME query parameter
+ * Supports two modes:
+ * 1. Query param: ?company=NAME (legacy)
+ * 2. UUID route: /report/:uuid (secure, preferred)
  * Single source of truth for demo data fetching
  */
-export function useDemoMode(): UseDemoModeReturn {
+export function useDemoMode(props?: UseDemoModeProps): UseDemoModeReturn {
+  const { reportUuid } = props || {};
+
   const [state, setState] = useState<DemoState>({
     companyName: '',
+    reportId: null,
     synthesis: null,
     status: 'idle',
     dataSource: 'none',
@@ -60,10 +72,13 @@ export function useDemoMode(): UseDemoModeReturn {
   const elapsedIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isMountedRef = useRef(true);
 
-  // Check URL params for demo mode
+  // Check URL params for demo mode (legacy)
   const urlParams = new URLSearchParams(window.location.search);
   const companyParam = urlParams.get('company');
-  const isDemoMode = !!companyParam;
+
+  // UUID mode takes precedence over query param mode
+  const isUuidMode = !!reportUuid;
+  const isDemoMode = isUuidMode || !!companyParam;
 
   // Cleanup on unmount
   useEffect(() => {
@@ -102,6 +117,42 @@ export function useDemoMode(): UseDemoModeReturn {
       return null;
     } catch (err) {
       console.warn('[Demo Mode] Fetch error:', err);
+      return null;
+    }
+  }, []);
+
+  // Fetch by UUID from Supabase
+  const fetchByUuid = useCallback(async (uuid: string): Promise<{ synthesis: SynthesisReportV2; companyName: string } | null> => {
+    if (!isSupabaseConfigured || !supabase) {
+      console.warn('[Demo Mode] Supabase not configured for UUID fetch');
+      return null;
+    }
+
+    try {
+      console.log('[Demo Mode] Fetching by UUID:', uuid);
+
+      const { data, error } = await supabase
+        .from('snapshots')
+        .select('report_data, company_name, created_at')
+        .eq('id', uuid)
+        .eq('is_public', true)
+        .single();
+
+      if (data && !error) {
+        console.log('[Demo Mode] Found report for:', data.company_name);
+        return {
+          synthesis: data.report_data as SynthesisReportV2,
+          companyName: data.company_name,
+        };
+      }
+
+      if (error) {
+        console.warn('[Demo Mode] UUID fetch error:', error.message);
+      }
+
+      return null;
+    } catch (err) {
+      console.warn('[Demo Mode] UUID fetch error:', err);
       return null;
     }
   }, []);
@@ -229,6 +280,7 @@ export function useDemoMode(): UseDemoModeReturn {
           console.log('[Demo Mode] Initial fetch found data');
           setState({
             companyName: company,
+            reportId: null,
             synthesis,
             status: 'success',
             dataSource: 'supabase',
@@ -262,6 +314,7 @@ export function useDemoMode(): UseDemoModeReturn {
           if (isMountedRef.current) {
             setState({
               companyName: company,
+              reportId: null,
               synthesis: synthesisData,
               status: 'success',
               dataSource: 'demo-config',
@@ -286,6 +339,7 @@ export function useDemoMode(): UseDemoModeReturn {
     if (isMountedRef.current) {
       setState({
         companyName: company,
+        reportId: null,
         synthesis: null,
         status: 'no-data',
         dataSource: 'none',
@@ -316,13 +370,14 @@ export function useDemoMode(): UseDemoModeReturn {
   const retry = manualCheck;
   const refetch = manualCheck;
 
-  // Initial fetch on mount
+  // Initial fetch on mount - handles both UUID and company param modes
   useEffect(() => {
     if (!isDemoMode) {
       setState(prev => ({
         ...prev,
         status: 'idle',
         companyName: '',
+        reportId: null,
         synthesis: null,
         error: null,
         isPolling: false,
@@ -330,17 +385,58 @@ export function useDemoMode(): UseDemoModeReturn {
       return;
     }
 
-    if (companyParam) {
+    // UUID mode takes precedence
+    if (isUuidMode && reportUuid) {
+      console.log('[Demo Mode] UUID mode - fetching by UUID:', reportUuid);
+
+      setState(prev => ({
+        ...prev,
+        status: 'loading',
+        reportId: reportUuid,
+        error: null,
+        synthesis: null,
+        pipelineStage: 'connecting',
+      }));
+
+      fetchByUuid(reportUuid).then(result => {
+        if (!isMountedRef.current) return;
+
+        if (result) {
+          setState({
+            companyName: result.companyName,
+            reportId: reportUuid,
+            synthesis: result.synthesis,
+            status: 'success',
+            dataSource: 'supabase-uuid',
+            error: null,
+            lastFetchedAt: new Date(),
+            pollCount: 0,
+            maxPolls: MAX_POLL_COUNT,
+            isPolling: false,
+            pipelineStage: 'complete',
+            elapsedSeconds: 0,
+          });
+        } else {
+          setState(prev => ({
+            ...prev,
+            status: 'no-data',
+            error: 'Report not found or not publicly accessible.',
+          }));
+        }
+      });
+    } else if (companyParam) {
+      // Legacy company param mode
       fetchDemoData(companyParam, false);
     }
 
     return () => {
       stopPolling();
     };
-  }, [companyParam, isDemoMode, fetchDemoData, stopPolling]);
+  }, [reportUuid, companyParam, isDemoMode, isUuidMode, fetchDemoData, fetchByUuid, stopPolling]);
 
   return {
     isDemoMode,
+    isUuidMode,
     isLoading: state.status === 'loading',
     ...state,
     retry,

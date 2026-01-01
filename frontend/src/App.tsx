@@ -1,5 +1,6 @@
 import { Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Routes, Route, useParams } from 'react-router-dom';
 import { AuthProvider, useAuth } from '@/contexts/AuthContext';
 import { AuthPage } from '@/components/auth/AuthPage';
 import { DashboardV2 } from '@/components/DashboardV2';
@@ -13,7 +14,9 @@ import './App.css';
 
 /**
  * Demo Mode Content - Bypasses auth for public demo links
- * URL format: ?company=CompanyName
+ * Supports two URL formats:
+ * - Legacy: ?company=CompanyName
+ * - Secure: /report/:uuid
  *
  * States:
  * - loading: Initial fetch in progress
@@ -23,9 +26,10 @@ import './App.css';
  * - timeout: Polling exceeded 60 seconds
  * - error: Fetch error
  */
-function DemoContent() {
+function DemoContent({ reportUuid }: { reportUuid?: string }) {
   const {
     isDemoMode,
+    isUuidMode,
     companyName,
     synthesis,
     status,
@@ -36,7 +40,7 @@ function DemoContent() {
     elapsedSeconds,
     startPolling,
     manualCheck,
-  } = useDemoMode();
+  } = useDemoMode({ reportUuid });
 
   if (!isDemoMode) {
     return null;
@@ -96,7 +100,7 @@ function DemoContent() {
         </motion.div>
       )}
 
-      {/* No data state - offer to start polling */}
+      {/* No data state - offer to start polling (only for legacy mode) */}
       {status === 'no-data' && (
         <motion.div
           key="no-data"
@@ -106,9 +110,9 @@ function DemoContent() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <NoDataFound
-            companyName={companyName}
+            companyName={companyName || 'Unknown'}
             onRetry={manualCheck}
-            onStartPolling={startPolling}
+            onStartPolling={isUuidMode ? undefined : startPolling}
           />
         </motion.div>
       )}
@@ -123,9 +127,9 @@ function DemoContent() {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         >
           <NoDataFound
-            companyName={companyName}
+            companyName={companyName || 'Unknown'}
             onRetry={manualCheck}
-            onStartPolling={startPolling}
+            onStartPolling={isUuidMode ? undefined : startPolling}
           />
         </motion.div>
       )}
@@ -167,18 +171,42 @@ function AuthContent() {
 }
 
 /**
- * Main App Content - Routes between demo and auth modes
+ * Report Page - Handles /report/:uuid routes
+ * Fetches report by UUID and displays it
  */
-function AppContent() {
+function ReportPage() {
+  const { uuid } = useParams<{ uuid: string }>();
+  return <DemoContent reportUuid={uuid} />;
+}
+
+/**
+ * Home Page - Handles root route with optional ?company= param
+ */
+function HomePage() {
   const { isDemoMode } = useDemoMode();
 
-  // Demo mode bypasses authentication
+  // Demo mode (legacy ?company= param) bypasses authentication
   if (isDemoMode) {
     return <DemoContent />;
   }
 
   // Standard authenticated flow
   return <AuthContent />;
+}
+
+/**
+ * Main App Content - Routes between different pages
+ */
+function AppContent() {
+  return (
+    <Routes>
+      {/* UUID-based report route (secure, preferred) */}
+      <Route path="/report/:uuid" element={<ReportPage />} />
+
+      {/* Root route - handles both auth flow and legacy ?company= demo mode */}
+      <Route path="/*" element={<HomePage />} />
+    </Routes>
+  );
 }
 
 function App() {

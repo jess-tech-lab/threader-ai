@@ -127,53 +127,54 @@ function saveToLocalFile(companyName, synthesis, metadata = {}) {
 
 /**
  * Save synthesis snapshot to Supabase AND local file
+ * Returns the UUID for shareable URL
  * @param {string} tenantId - Tenant ID
  * @param {string} companyId - Company ID
  * @param {string} companyName - Company name (for frontend lookup)
  * @param {Object} synthesis - The strategic synthesis object
  * @param {Object} metadata - Additional metadata
+ * @returns {Object} - { uuid, localResult }
  */
 async function saveSnapshot(tenantId, companyId, companyName, synthesis, metadata = {}) {
   // ALWAYS save to local file first (works without Supabase)
   console.log(`\n[Scout] 💾 Saving snapshot for: ${companyName}`);
 
   const localResult = saveToLocalFile(companyName, synthesis, metadata);
+  let reportUuid = null;
 
   // If Supabase is configured, also save there
   if (supabaseAdmin) {
     console.log(`[Scout]    Also saving to Supabase...`);
 
+    // Use the new schema with report_data instead of synthesis_data
     const snapshot = {
-      tenant_id: tenantId,
-      company_id: companyId,
       company_name: companyName,
+      report_data: synthesis,
       is_public: true,
-      synthesis_data: synthesis,
-      metadata: {
-        ...metadata,
-        created_by: 'terminal_scout',
-        version: '2.0',
-      },
-      created_at: new Date().toISOString(),
+      tenant_id: tenantId || 'public',
+      company_id: companyId || null,
     };
 
     try {
       const { data, error } = await supabaseAdmin
         .from('snapshots')
         .insert(snapshot)
-        .select()
+        .select('id, created_at')
         .single();
 
       if (error) {
         if (error.code === '42P01') {
           console.warn('[Scout] ⚠️  Supabase snapshots table does not exist');
-          console.warn('[Scout]    Run: node scripts/diagnose.js for setup instructions');
+          console.warn('[Scout]    Run the migration: supabase/migrations/001_create_snapshots_table.sql');
         } else {
           console.warn(`[Scout] ⚠️  Supabase save failed: ${error.message}`);
         }
         console.log(`[Scout]    Local file will be used as fallback`);
       } else {
-        console.log(`[Scout] ✅ Also saved to Supabase (ID: ${data.id})`);
+        reportUuid = data.id;
+        console.log(`[Scout] ✅ Saved to Supabase`);
+        console.log(`[Scout]    UUID: ${reportUuid}`);
+        console.log(`[Scout]    Created: ${data.created_at}`);
       }
     } catch (err) {
       console.warn(`[Scout] ⚠️  Supabase error: ${err.message}`);
@@ -183,10 +184,15 @@ async function saveSnapshot(tenantId, companyId, companyName, synthesis, metadat
     console.log(`[Scout]    Supabase not configured - using local file only`);
   }
 
-  console.log(`\n[Scout] 🌐 Demo URL: http://localhost:5173/?company=${encodeURIComponent(companyName)}`);
-  console.log(`[Scout] ✅ Report ready! Open the URL above in your browser.`);
+  // Print shareable URLs
+  console.log(`\n[Scout] 🔗 Report URLs:`);
+  if (reportUuid) {
+    console.log(`[Scout]    📌 Secure URL (UUID): http://localhost:5173/report/${reportUuid}`);
+  }
+  console.log(`[Scout]    📝 Legacy URL (name): http://localhost:5173/?company=${encodeURIComponent(companyName)}`);
+  console.log(`[Scout] ✅ Report ready! Open a URL above in your browser.`);
 
-  return localResult;
+  return { uuid: reportUuid, localResult };
 }
 
 /**
@@ -352,9 +358,10 @@ async function scout(companyName, tenantId) {
   console.log('\n┌─ Step 4: Save Results ───────────────────────────────────┐');
 
   // ALWAYS save to local file if we have synthesis data
+  let reportUuid = null;
   if (results.strategicSynthesis) {
     try {
-      const snapshot = await saveSnapshot(
+      const saveResult = await saveSnapshot(
         tenantId,
         company?.id || null,
         companyName,
@@ -365,8 +372,9 @@ async function scout(companyName, tenantId) {
           subredditsSearched: results.scrapeResults?.subredditsSearched || [],
         }
       );
-      results.snapshot = snapshot;
-      console.log('│  ✅ Synthesis saved to local file');
+      results.snapshot = saveResult.localResult;
+      reportUuid = saveResult.uuid;
+      console.log('│  ✅ Synthesis saved');
     } catch (error) {
       console.error('│  ❌ Save error:', error.message);
       results.errors.push({ step: 'save', error: error.message });
@@ -415,13 +423,18 @@ async function scout(companyName, tenantId) {
     metadata: {
       companyName,
       tenantId,
-      snapshotId: results.snapshot?.id || null,
+      reportUuid,
+      reportUrl: reportUuid ? `http://localhost:5173/report/${reportUuid}` : null,
+      legacyUrl: `http://localhost:5173/?company=${encodeURIComponent(companyName)}`,
       analyzedAt: new Date().toISOString(),
       totalItems: results.classificationResults?.items?.length || 0,
     },
     synthesis: results.strategicSynthesis,
     errors: results.errors,
   }, null, 2));
+
+  // Add UUID to results for programmatic access
+  results.reportUuid = reportUuid;
 
   return results;
 }

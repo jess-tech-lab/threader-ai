@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -639,7 +639,7 @@ export function StillProcessing({
 interface NoDataFoundProps {
   companyName: string;
   onRetry: () => void;
-  onStartPolling: () => void;
+  onStartPolling?: () => void; // Optional - not shown for UUID mode
 }
 
 /**
@@ -696,14 +696,16 @@ export function NoDataFound({
 
         {/* Actions */}
         <div className="flex gap-3">
-          <Button
-            onClick={onStartPolling}
-            variant="default"
-            size="sm"
-            className="bg-gray-900 hover:bg-gray-800 text-white rounded-full px-5"
-          >
-            Wait for Report
-          </Button>
+          {onStartPolling && (
+            <Button
+              onClick={onStartPolling}
+              variant="default"
+              size="sm"
+              className="bg-gray-900 hover:bg-gray-800 text-white rounded-full px-5"
+            >
+              Wait for Report
+            </Button>
+          )}
           <Button
             onClick={onRetry}
             variant="ghost"
@@ -714,10 +716,12 @@ export function NoDataFound({
           </Button>
         </div>
 
-        {/* Hint */}
-        <p className="text-xs text-gray-400 mt-6">
-          "Wait for Report" checks every 3 seconds
-        </p>
+        {/* Hint - only show if polling is available */}
+        {onStartPolling && (
+          <p className="text-xs text-gray-400 mt-6">
+            "Wait for Report" checks every 3 seconds
+          </p>
+        )}
       </motion.div>
 
       {/* Shared gradient styles */}

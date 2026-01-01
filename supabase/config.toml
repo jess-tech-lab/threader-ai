@@ -1,0 +1,11 @@
+# Supabase Configuration
+# See https://supabase.com/docs/guides/cli/config for more options
+
+[project]
+project_id = "atgcgcohcdjwoplnhqyl"
+
+[api]
+enabled = true
+
+[functions]
+enabled = true

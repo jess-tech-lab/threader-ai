@@ -1,12 +1,47 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Sparkles, Loader2, ArrowRight } from 'lucide-react';
+import { Send, Loader2, ArrowRight, ExternalLink, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import type { FocusArea, SynthesisReportV2 } from '@/types';
+import { askThreader } from '@/services/askThreader';
+
+// Custom Thread/Network Icon for Threader AI branding
+function ThreadIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* Connected nodes pattern */}
+      <circle cx="5" cy="6" r="2" />
+      <circle cx="19" cy="6" r="2" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="5" cy="18" r="2" />
+      <circle cx="19" cy="18" r="2" />
+      {/* Connecting lines */}
+      <path d="M7 6h10" />
+      <path d="M5 8v8" />
+      <path d="M19 8v8" />
+      <path d="M7 18h10" />
+      <path d="M7 7l3 3" />
+      <path d="M14 9l3-3" />
+      <path d="M7 17l3-3" />
+      <path d="M14 15l3 3" />
+    </svg>
+  );
+}
 
 interface Message {
   id: string;
   role: 'user' | 'assistant';
   content: string;
+  isFeedbackPanel?: boolean;
+  feedbackData?: FocusArea;
 }
 
 interface SmartSuggestion {
@@ -18,14 +53,76 @@ interface AskThreaderPanelProps {
   isOpen: boolean;
   onClose: () => void;
   suggestions: SmartSuggestion[];
+  selectedFeedback?: FocusArea | null;
+  onClearFeedback?: () => void;
+  synthesis: SynthesisReportV2 | null;
+  companyName: string;
 }
 
-export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPanelProps) {
+// Strip leading/trailing quotes to avoid double-quoting
+function cleanQuote(text: string): string {
+  return text.replace(/^["'"]+|["'"]+$/g, '').trim();
+}
+
+// Simple markdown renderer for AI responses
+function renderMarkdown(text: string): string {
+  return text
+    // Bold text: **text** or __text__
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/__(.+?)__/g, '<strong>$1</strong>')
+    // Italic text: *text* or _text_
+    .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+    .replace(/(?<!_)_(?!_)(.+?)(?<!_)_(?!_)/g, '<em>$1</em>')
+    // Line breaks
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/\n/g, '<br/>')
+    // Bullet points
+    .replace(/^[-•] (.+)$/gm, '<li>$1</li>')
+    .replace(/(<li>.*<\/li>)/gs, '<ul class="list-disc pl-4 my-2">$1</ul>')
+    // Numbered lists
+    .replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
+}
+
+// Generate contextual suggestions based on the feedback
+function generateFeedbackSuggestions(feedback: FocusArea): SmartSuggestion[] {
+  return [
+    { label: `Why is this ${feedback.trend === 'up' ? 'rising' : 'trending'}?`, query: `Why is "${feedback.title}" ${feedback.trend === 'up' ? 'rising' : 'trending'}?` },
+    { label: 'What caused this issue?', query: `What's the root cause of "${feedback.title}"?` },
+    { label: 'How should we prioritize this?', query: `How should we prioritize "${feedback.title}" compared to other issues?` },
+  ];
+}
+
+export function AskThreaderPanel({ isOpen, onClose, suggestions, selectedFeedback, onClearFeedback, synthesis, companyName }: AskThreaderPanelProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [currentFeedback, setCurrentFeedback] = useState<FocusArea | null>(null);
+
+  // When a new feedback is selected, add it as the first message
+  useEffect(() => {
+    if (selectedFeedback && selectedFeedback !== currentFeedback) {
+      setCurrentFeedback(selectedFeedback);
+      // Clear previous messages and add the feedback panel
+      setMessages([{
+        id: `feedback-${Date.now()}`,
+        role: 'assistant',
+        content: '',
+        isFeedbackPanel: true,
+        feedbackData: selectedFeedback,
+      }]);
+    }
+  }, [selectedFeedback, currentFeedback]);
+
+  // Clear messages when panel closes
+  useEffect(() => {
+    if (!isOpen) {
+      setMessages([]);
+      setCurrentFeedback(null);
+      onClearFeedback?.();
+    }
+  }, [isOpen, onClearFeedback]);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -38,7 +135,7 @@ export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPa
   }, [messages]);
 
   const handleSubmit = async (query: string) => {
-    if (!query.trim()) return;
+    if (!query.trim() || !synthesis) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -50,16 +147,32 @@ export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPa
     setInput('');
     setIsLoading(true);
 
-    // Simulate AI response - replace with actual API call
-    setTimeout(() => {
+    try {
+      // Call the Ask Threader AI service
+      const response = await askThreader({
+        question: query,
+        selectedFeedback: currentFeedback,
+        synthesis,
+        companyName,
+      });
+
       const aiResponse: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: generateMockResponse(query),
+        content: response.answer,
       };
       setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error('Error getting AI response:', error);
+      const errorResponse: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: 'Sorry, I encountered an error processing your question. Please try again.',
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -95,7 +208,7 @@ export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPa
               <div className="p-4 border-b border-border/50">
                 <div className="flex items-center gap-2">
                   <div className="p-2 rounded-lg bg-primary/10">
-                    <Sparkles className="w-5 h-5 text-primary" />
+                    <ThreadIcon className="w-5 h-5 text-primary" />
                   </div>
                   <div>
                     <h2 className="text-title">Ask Threader</h2>
@@ -139,15 +252,115 @@ export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPa
                           message.role === 'user' ? 'justify-end' : 'justify-start'
                         }`}
                       >
-                        <div
-                          className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
-                            message.role === 'user'
-                              ? 'bg-primary text-primary-foreground'
-                              : 'bg-muted'
-                          }`}
-                        >
-                          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                        </div>
+                        {/* Regular message rendering with markdown support */}
+                        {!message.isFeedbackPanel && (
+                          <div
+                            className={`max-w-[85%] rounded-2xl px-4 py-2.5 ${
+                              message.role === 'user'
+                                ? 'bg-primary text-primary-foreground'
+                                : 'bg-muted'
+                            }`}
+                          >
+                            {message.role === 'assistant' ? (
+                              <div
+                                className="text-sm prose prose-sm dark:prose-invert max-w-none [&>p]:my-2 [&>ul]:my-2 [&>ol]:my-2 [&_li]:my-0.5"
+                                dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
+                              />
+                            ) : (
+                              <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Special rendering for feedback panel */}
+                        {message.isFeedbackPanel && message.feedbackData && (
+                          <div className="w-full space-y-4">
+                            {/* Original Feedback Header */}
+                            <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide font-medium">
+                              <MessageSquare className="w-3.5 h-3.5" />
+                              Original Feedback
+                            </div>
+
+                            {/* Feedback Quote - Full text, no truncation, cleaned of extra quotes */}
+                            <div className="bg-muted/50 rounded-xl p-4 border-l-4 border-primary">
+                              <p
+                                className="text-base italic text-foreground leading-relaxed"
+                                style={{
+                                  wordBreak: 'break-word',
+                                  whiteSpace: 'pre-wrap',
+                                  overflowWrap: 'break-word'
+                                }}
+                              >
+                                "{cleanQuote(message.feedbackData.topQuote || message.feedbackData.title)}"
+                              </p>
+                            </div>
+
+                            {/* Metadata */}
+                            <div className="flex items-center gap-3 flex-wrap">
+                              {/* Subreddit Badge */}
+                              {message.feedbackData.subreddit && (
+                                <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-orange-500/10 text-orange-600">
+                                  {message.feedbackData.subreddit}
+                                </span>
+                              )}
+
+                              {/* Category Badge */}
+                              <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary capitalize">
+                                {message.feedbackData.category.replace('_', ' ')}
+                              </span>
+
+                              {/* Impact Score */}
+                              <span className="text-xs text-muted-foreground">
+                                Impact: <span className="font-semibold text-foreground">{message.feedbackData.impactScore.toFixed(1)}</span>
+                              </span>
+
+                              {/* Frequency */}
+                              <span className="text-xs text-muted-foreground">
+                                {message.feedbackData.frequency} mentions
+                              </span>
+                            </div>
+
+                            {/* Reddit Link - uses actual URL if available */}
+                            {message.feedbackData.sourceUrl ? (
+                              <a
+                                href={message.feedbackData.sourceUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+                              >
+                                <ExternalLink className="w-3.5 h-3.5" />
+                                View original post on Reddit
+                              </a>
+                            ) : (
+                              <span className="text-xs text-muted-foreground italic">
+                                Source: Reddit (aggregated from multiple posts)
+                              </span>
+                            )}
+
+                            {/* Divider */}
+                            <div className="border-t border-border/50 pt-4 mt-4">
+                              <p className="text-xs text-muted-foreground uppercase tracking-wide font-medium mb-3">
+                                Ask Threader about this feedback
+                              </p>
+
+                              {/* Contextual Suggestions */}
+                              <div className="space-y-2">
+                                {generateFeedbackSuggestions(message.feedbackData).map((suggestion, i) => (
+                                  <button
+                                    key={i}
+                                    onClick={() => handleSubmit(suggestion.query)}
+                                    className="w-full text-left p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors group"
+                                  >
+                                    <div className="flex items-center justify-between">
+                                      <span className="text-sm">{suggestion.label}</span>
+                                      <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                                    </div>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </motion.div>
                     ))}
                     {isLoading && (
@@ -194,59 +407,4 @@ export function AskThreaderPanel({ isOpen, onClose, suggestions }: AskThreaderPa
       )}
     </AnimatePresence>
   );
-}
-
-// Mock response generator - replace with actual AI integration
-function generateMockResponse(query: string): string {
-  const lowerQuery = query.toLowerCase();
-
-  if (lowerQuery.includes('performance') || lowerQuery.includes('database')) {
-    return `Based on the analysis, Database Performance is the #1 issue with an impact score of 8.7/10.
-
-Key findings:
-- 25 mentions across analyzed feedback
-- Trending upward (+8 from last period)
-- Primarily affects Power Users and Enterprise Teams
-
-The root cause appears to be client-side rendering bottlenecks with large datasets. Users with 5000+ pages report 30+ second load times.
-
-Recommended action: Prioritize virtualization and lazy loading for large workspaces.`;
-  }
-
-  if (lowerQuery.includes('offline')) {
-    return `Offline Mode is the #2 priority with an impact score of 7.9/10.
-
-The analysis shows this feature is blocking mobile-first user adoption. Users frequently mention competitors like Obsidian that offer offline-first functionality.
-
-Key segments affected: Mobile Users, Travelers, Remote Workers
-
-Risk if not addressed: Mobile adoption remains blocked while competitor advantage widens.`;
-  }
-
-  if (lowerQuery.includes('love') || lowerQuery.includes('positive') || lowerQuery.includes('strength')) {
-    return `Users strongly love three things:
-
-1. AI Summarization (9/10 shareability)
-   "What would have taken 2 hours took 30 seconds"
-
-2. Flexibility (8/10 shareability)
-   "I built my entire CRM, project tracker, and wiki in one tool"
-
-3. Team Collaboration (8/10 shareability)
-   "Real-time collaboration finally works"
-
-Brand perception: Powerful, Flexible, Modern
-Overall brand strength: 7.8/10`;
-  }
-
-  return `Based on the current report data, I found the following insights related to your question:
-
-The analysis covers 156 total feedback items with 89 high-signal items identified. The overall sentiment is Stable with 45% positive, 32% neutral, and 23% negative feedback.
-
-The top focus areas are:
-1. Database Performance (8.7 impact)
-2. Offline Mode (7.9 impact)
-3. Onboarding (6.5 impact)
-
-Would you like me to dive deeper into any specific area?`;
 }

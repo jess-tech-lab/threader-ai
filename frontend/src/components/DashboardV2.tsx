@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Activity,
   Moon,
   Sun,
   FileDown,
@@ -17,6 +16,29 @@ import {
   Clock,
   AlertCircle
 } from 'lucide-react';
+
+// Custom Thread Logo Icon - weaving line through dots
+function ThreadLogoIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      {/* Weaving thread through 4 dots */}
+      <circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="10" cy="6" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="14" cy="18" r="1.5" fill="currentColor" stroke="none" />
+      <circle cx="20" cy="12" r="1.5" fill="currentColor" stroke="none" />
+      {/* Weaving line */}
+      <path d="M4 12 Q7 6, 10 6 Q12 6, 12 12 Q12 18, 14 18 Q17 18, 20 12" />
+    </svg>
+  );
+}
 import { TooltipProvider, Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { GlassCard } from '@/components/ui/glass-card';
@@ -71,6 +93,7 @@ export function DashboardV2({ demoMode }: DashboardV2Props) {
   const [isAskThreaderOpen, setIsAskThreaderOpen] = useState(false);
   const [isExporting, setIsExporting] = useState<'full' | 'onepager' | null>(null);
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const [selectedFeedback, setSelectedFeedback] = useState<import('@/types').FocusArea | null>(null);
 
   // Demo mode: company name comes from URL, synthesis comes from useDemoMode hook
   // Non-demo mode: defaults (for authenticated users)
@@ -90,8 +113,15 @@ export function DashboardV2({ demoMode }: DashboardV2Props) {
     document.documentElement.classList.toggle('dark');
   };
 
-  const handleAskThreader = (_question: string) => {
+  // Handle card click to open AI chat with feedback
+  const handleCardClick = (focusArea: import('@/types').FocusArea) => {
+    setSelectedFeedback(focusArea);
     setIsAskThreaderOpen(true);
+  };
+
+  // Clear selected feedback when closing
+  const handleClearFeedback = () => {
+    setSelectedFeedback(null);
   };
 
   const handleExportPDF = async (mode: 'full' | 'onepager') => {
@@ -190,7 +220,7 @@ Brand strength is solid at ${synthesis.brandStrengths.overallScore}/10, driven b
               {/* Logo & Title */}
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-xl bg-primary/10">
-                  <Activity className="w-6 h-6 text-primary" />
+                  <ThreadLogoIcon className="w-6 h-6 text-primary" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
@@ -282,15 +312,9 @@ Brand strength is solid at ${synthesis.brandStrengths.overallScore}/10, driven b
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4 }}
                 >
-                  {/* Hero Headline with Sentiment on Right */}
-                  <div className="flex items-start justify-between mb-2">
+                  {/* Hero Headline */}
+                  <div className="mb-2">
                     <h2 className="hero-headline">{heroHeadline}</h2>
-                    <div className="text-right flex-shrink-0 ml-4">
-                      <span className="text-2xl font-bold text-foreground">
-                        {synthesis.sentiment.positive}%
-                      </span>
-                      <p className="text-xs text-muted-foreground">positive sentiment</p>
-                    </div>
                   </div>
 
                   {/* Metadata Anchor */}
@@ -430,7 +454,7 @@ Brand strength is solid at ${synthesis.brandStrengths.overallScore}/10, driven b
                       key={area.id}
                       focusArea={area}
                       index={i}
-                      onAskThreader={handleAskThreader}
+                      onClick={handleCardClick}
                     />
                   ))}
                 </div>
@@ -669,6 +693,10 @@ Brand strength is solid at ${synthesis.brandStrengths.overallScore}/10, driven b
           isOpen={isAskThreaderOpen}
           onClose={() => setIsAskThreaderOpen(false)}
           suggestions={smartSuggestions}
+          selectedFeedback={selectedFeedback}
+          onClearFeedback={handleClearFeedback}
+          synthesis={synthesis}
+          companyName={companyName}
         />
       </div>
     </TooltipProvider>

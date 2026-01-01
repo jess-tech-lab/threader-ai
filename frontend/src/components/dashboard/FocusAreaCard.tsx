@@ -5,16 +5,14 @@ import {
   Bug,
   Heart,
   Sparkles,
-  MessageCircle
 } from 'lucide-react';
 import { GlassCard } from '@/components/ui/glass-card';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { FocusArea, FocusAreaCategory } from '@/types';
 
 interface FocusAreaCardProps {
   focusArea: FocusArea;
   index: number;
-  onAskThreader?: (question: string) => void;
+  onClick?: (focusArea: FocusArea) => void;
 }
 
 const categoryConfig: Record<FocusAreaCategory, {
@@ -90,7 +88,12 @@ function truncateQuote(quote: string, maxLength: number = 100): string {
   return quote.slice(0, maxLength).trim() + '...';
 }
 
-export function FocusAreaCard({ focusArea, index, onAskThreader }: FocusAreaCardProps) {
+// Strip leading/trailing quotes to avoid double-quoting
+function cleanQuote(quote: string): string {
+  return quote.replace(/^["'"]+|["'"]+$/g, '').trim();
+}
+
+export function FocusAreaCard({ focusArea, index, onClick }: FocusAreaCardProps) {
   const config = categoryConfig[focusArea.category] || categoryConfig.usability_friction;
   const Icon = config.icon;
 
@@ -103,13 +106,15 @@ export function FocusAreaCard({ focusArea, index, onAskThreader }: FocusAreaCard
     >
       <motion.div
         whileHover={{ scale: 1.02, y: -4 }}
+        whileTap={{ scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-        className="h-full"
+        className="h-full cursor-pointer"
+        onClick={() => onClick?.(focusArea)}
       >
         <GlassCard
           hover={false}
           animate={false}
-          className="h-full flex flex-col p-4 hover:shadow-lg hover:shadow-black/5 transition-shadow duration-300"
+          className="h-full flex flex-col p-4 hover:shadow-lg hover:shadow-primary/10 hover:border-primary/20 transition-all duration-300"
         >
           {/* Header Row */}
           <div className="flex items-center justify-between mb-3">
@@ -124,38 +129,20 @@ export function FocusAreaCard({ focusArea, index, onAskThreader }: FocusAreaCard
             <TrendBadge trend={focusArea.trend} delta={focusArea.trendDelta} />
           </div>
 
-          {/* Title */}
-          <h3 className="text-base font-semibold text-foreground mb-2 line-clamp-2">
-            {focusArea.title}
-          </h3>
-
-          {/* Score & Frequency */}
-          <div className="flex items-baseline gap-2 mb-3">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="text-2xl font-bold text-foreground cursor-help">
-                  {focusArea.impactScore.toFixed(1)}
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-xs">
-                <div className="space-y-2">
-                  <p className="text-xs text-muted-foreground">{focusArea.scoreRationale}</p>
-                  <p className="text-xs font-mono text-muted-foreground">
-                    Impact = (R×0.4) + (S×0.3) + (V×0.3)
-                  </p>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-            <span className="text-sm text-muted-foreground">impact</span>
-            <span className="text-sm text-muted-foreground ml-auto">
+          {/* Title & Mentions */}
+          <div className="mb-3">
+            <h3 className="text-base font-semibold text-foreground mb-1 line-clamp-2">
+              {focusArea.title}
+            </h3>
+            <span className="text-xs text-muted-foreground">
               {focusArea.frequency} mentions
             </span>
           </div>
 
-          {/* Quote - Truncated */}
+          {/* Quote - Truncated, cleaned of extra quotes */}
           {focusArea.topQuote && (
             <blockquote className="text-sm text-muted-foreground italic border-l-2 border-border pl-3 mb-3 line-clamp-2">
-              "{truncateQuote(focusArea.topQuote)}"
+              "{truncateQuote(cleanQuote(focusArea.topQuote))}"
             </blockquote>
           )}
 
@@ -173,32 +160,21 @@ export function FocusAreaCard({ focusArea, index, onAskThreader }: FocusAreaCard
             <span className="line-clamp-2">{focusArea.stakes.message}</span>
           </div>
 
-          {/* Footer: Segments + Ask Threader */}
+          {/* Footer: Segments */}
           <div className="mt-auto pt-2 border-t border-border/50">
-            <div className="flex items-center justify-between">
-              <div className="flex flex-wrap gap-1">
-                {focusArea.affectedSegments.slice(0, 2).map((segment, i) => (
-                  <span
-                    key={i}
-                    className="px-2 py-0.5 bg-muted/70 rounded text-xs text-muted-foreground"
-                  >
-                    {segment}
-                  </span>
-                ))}
-                {focusArea.affectedSegments.length > 2 && (
-                  <span className="px-2 py-0.5 text-xs text-muted-foreground">
-                    +{focusArea.affectedSegments.length - 2}
-                  </span>
-                )}
-              </div>
-              {onAskThreader && (
-                <button
-                  onClick={() => onAskThreader(`Why is "${focusArea.title}" trending ${focusArea.trend}?`)}
-                  className="flex items-center gap-1 text-xs text-primary hover:text-primary/80 transition-colors"
+            <div className="flex flex-wrap gap-1">
+              {focusArea.affectedSegments.slice(0, 3).map((segment, i) => (
+                <span
+                  key={i}
+                  className="px-2 py-0.5 bg-muted/70 rounded text-xs text-muted-foreground"
                 >
-                  <MessageCircle className="w-3 h-3" />
-                  Ask
-                </button>
+                  {segment}
+                </span>
+              ))}
+              {focusArea.affectedSegments.length > 3 && (
+                <span className="px-2 py-0.5 text-xs text-muted-foreground">
+                  +{focusArea.affectedSegments.length - 3}
+                </span>
               )}
             </div>
           </div>

@@ -45,6 +45,8 @@ export interface FocusArea {
   stakes: Stakes;
   scoreRationale: string;
   affectedSegments: string[];
+  sourceUrl?: string; // Reddit post URL
+  subreddit?: string; // Subreddit name (e.g., "r/starbucks")
 }
 
 // ============================================================================

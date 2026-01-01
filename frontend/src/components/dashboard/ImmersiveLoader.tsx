@@ -1,7 +1,236 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// ============================================================================
+// THREADING ANIMATION COMPONENT - Network/Constellation Style
+// ============================================================================
+
+interface Point {
+  id: number;
+  x: number;
+  y: number;
+}
+
+interface Connection {
+  from: number;
+  to: number;
+}
+
+/**
+ * Generates random points spread across a larger area
+ * Reduced padding for wider distribution (network/constellation feel)
+ */
+function generateRandomPoints(count: number): Point[] {
+  const points: Point[] = [];
+  const padding = 8; // % from edges (smaller padding = wider spread)
+
+  for (let i = 0; i < count; i++) {
+    points.push({
+      id: i,
+      x: padding + Math.random() * (100 - 2 * padding),
+      y: padding + Math.random() * (100 - 2 * padding),
+    });
+  }
+
+  return points;
+}
+
+/**
+ * Creates network connections between nearby points
+ * Each point connects to 1-2 nearby points
+ */
+function generateConnections(points: Point[]): Connection[] {
+  const connections: Connection[] = [];
+  const maxDistance = 65; // Larger distance to connect spread-out dots
+
+  for (let i = 0; i < points.length; i++) {
+    // Calculate distances to all other points
+    const distances: { index: number; dist: number }[] = [];
+
+    for (let j = 0; j < points.length; j++) {
+      if (i !== j) {
+        const dx = points[i].x - points[j].x;
+        const dy = points[i].y - points[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < maxDistance) {
+          distances.push({ index: j, dist });
+        }
+      }
+    }
+
+    // Sort by distance and connect to 1-2 nearest
+    distances.sort((a, b) => a.dist - b.dist);
+    const connectCount = Math.min(2, distances.length);
+
+    for (let k = 0; k < connectCount; k++) {
+      const targetIndex = distances[k].index;
+      // Avoid duplicate connections
+      const exists = connections.some(
+        c => (c.from === i && c.to === targetIndex) ||
+             (c.from === targetIndex && c.to === i)
+      );
+      if (!exists) {
+        connections.push({ from: i, to: targetIndex });
+      }
+    }
+  }
+
+  return connections;
+}
+
+/**
+ * Threading Animation - Network/Constellation with straight lines
+ * Brand: Teal/cyan color palette
+ */
+function ThreadingAnimation() {
+  const [cycle, setCycle] = useState(0);
+  const [points, setPoints] = useState<Point[]>(() => generateRandomPoints(6));
+  const [connections, setConnections] = useState<Connection[]>([]);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Generate connections when points change
+  useEffect(() => {
+    if (!isTransitioning) {
+      setConnections(generateConnections(points));
+    }
+  }, [points, isTransitioning]);
+
+  // Generate new random points for next cycle
+  const regeneratePoints = useCallback(() => {
+    setIsTransitioning(true);
+
+    // Wait for fade out, then generate new points
+    setTimeout(() => {
+      const count = 5 + Math.floor(Math.random() * 3); // 5-7 dots
+      const newPoints = generateRandomPoints(count);
+      setPoints(newPoints);
+      setCycle(c => c + 1);
+      setIsTransitioning(false);
+    }, 800);
+  }, []);
+
+  // Cycle through animations - slower for premium feel
+  useEffect(() => {
+    const interval = setInterval(regeneratePoints, 10000); // 10 second cycles for calmer feel
+    return () => clearInterval(interval);
+  }, [regeneratePoints]);
+
+  return (
+    <div className="threading-container">
+      <svg
+        viewBox="0 0 100 100"
+        className="threading-svg"
+        preserveAspectRatio="xMidYMid meet"
+      >
+        {/* Definitions */}
+        <defs>
+          <linearGradient id="threadGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="rgba(20, 184, 166, 0.9)" />
+            <stop offset="100%" stopColor="rgba(6, 182, 212, 0.7)" />
+          </linearGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Network lines connecting dots */}
+        {connections.map((conn, index) => {
+          const from = points[conn.from];
+          const to = points[conn.to];
+          if (!from || !to) return null;
+
+          return (
+            <motion.line
+              key={`line-${cycle}-${index}`}
+              x1={from.x}
+              y1={from.y}
+              x2={to.x}
+              y2={to.y}
+              stroke="rgba(20, 184, 166, 0.5)"
+              strokeWidth="0.5"
+              strokeLinecap="round"
+              filter="url(#glow)"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{
+                pathLength: isTransitioning ? 0 : 1,
+                opacity: isTransitioning ? 0 : 0.6
+              }}
+              transition={{
+                pathLength: { duration: 2.5, delay: index * 0.2, ease: "easeOut" },
+                opacity: { duration: 0.8, delay: index * 0.2 }
+              }}
+            />
+          );
+        })}
+
+        {/* The dots/nodes */}
+        {points.map((point, index) => (
+          <motion.circle
+            key={`dot-${cycle}-${point.id}`}
+            cx={point.x}
+            cy={point.y}
+            r="1.8"
+            fill="rgba(20, 184, 166, 1)"
+            filter="url(#glow)"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{
+              scale: isTransitioning ? 0 : 1,
+              opacity: isTransitioning ? 0 : 1
+            }}
+            transition={{
+              delay: index * 0.15,
+              duration: 0.8,
+              ease: "backOut"
+            }}
+          />
+        ))}
+
+        {/* Subtle pulsing rings on dots */}
+        {points.map((point, index) => (
+          <motion.circle
+            key={`ring-${cycle}-${point.id}`}
+            cx={point.x}
+            cy={point.y}
+            r="1.8"
+            fill="none"
+            stroke="rgba(20, 184, 166, 0.3)"
+            strokeWidth="0.4"
+            initial={{ scale: 1, opacity: 0 }}
+            animate={{
+              scale: isTransitioning ? 1 : [1, 3, 1],
+              opacity: isTransitioning ? 0 : [0.4, 0, 0.4]
+            }}
+            transition={{
+              delay: index * 0.2 + 1,
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
+      </svg>
+
+      <style>{`
+        .threading-container {
+          width: 420px;
+          height: 260px;
+          position: relative;
+        }
+
+        .threading-svg {
+          width: 100%;
+          height: 100%;
+        }
+      `}</style>
+    </div>
+  );
+}
 
 // Pipeline stages for progress tracking
 export type PipelineStage = 'connecting' | 'discovery' | 'scraping' | 'analyzing' | 'synthesizing' | 'complete' | 'polling';
@@ -36,7 +265,8 @@ export function ImmersiveLoader({
   isPolling = false,
 }: ImmersiveLoaderProps) {
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
-  const [animatedProgress, setAnimatedProgress] = useState(0);
+  const [animatedProgress, setAnimatedProgress] = useState(5);
+  const [simulatedProgress, setSimulatedProgress] = useState(0);
   const tips = generateTips(companyName);
 
   // Cycle through tips every 3 seconds
@@ -47,6 +277,22 @@ export function ImmersiveLoader({
     return () => clearInterval(interval);
   }, [tips.length]);
 
+  // Simulate progress when not polling (initial loading state)
+  useEffect(() => {
+    if (!isPolling) {
+      const interval = setInterval(() => {
+        setSimulatedProgress((prev) => {
+          // Slowly increase to 85%, never reaching 100% until actual completion
+          if (prev >= 85) return prev;
+          // Slow down as we get closer to 85%
+          const increment = Math.max(0.5, (85 - prev) / 30);
+          return Math.min(85, prev + increment);
+        });
+      }, 150);
+      return () => clearInterval(interval);
+    }
+  }, [isPolling]);
+
   // Calculate progress based on stage or poll count
   const getProgress = () => {
     if (isPolling) {
@@ -54,10 +300,15 @@ export function ImmersiveLoader({
       return 15 + pollProgress * 80;
     }
 
+    // For non-polling states, use simulated progress
+    if (stage === 'connecting' || stage === 'polling') {
+      return Math.max(5, simulatedProgress);
+    }
+
     const stages: PipelineStage[] = ['connecting', 'discovery', 'scraping', 'analyzing', 'synthesizing', 'complete'];
     const stageIndex = stages.indexOf(stage);
-    if (stageIndex === -1) return 10;
-    return ((stageIndex + 1) / stages.length) * 100;
+    if (stageIndex === -1) return simulatedProgress;
+    return Math.max(simulatedProgress, ((stageIndex + 1) / stages.length) * 100);
   };
 
   // Smooth progress animation
@@ -66,15 +317,14 @@ export function ImmersiveLoader({
     const interval = setInterval(() => {
       setAnimatedProgress((prev) => {
         const diff = target - prev;
-        if (Math.abs(diff) < 0.5) {
-          clearInterval(interval);
+        if (Math.abs(diff) < 0.3) {
           return target;
         }
-        return prev + diff * 0.12;
+        return prev + diff * 0.15;
       });
-    }, 40);
+    }, 30);
     return () => clearInterval(interval);
-  }, [stage, pollCount, isPolling]);
+  }, [stage, pollCount, isPolling, simulatedProgress]);
 
   return (
     <div className="fixed inset-0 flex items-center justify-center overflow-hidden">
@@ -103,14 +353,14 @@ export function ImmersiveLoader({
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-10 flex flex-col items-center px-6 max-w-md w-full"
       >
-        {/* Pulsing Blob */}
+        {/* Threading Animation */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
+          initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-          className="mb-8"
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="mb-6"
         >
-          <div className="pulse-blob" />
+          <ThreadingAnimation />
         </motion.div>
 
         {/* Company Name */}
@@ -282,32 +532,6 @@ export function ImmersiveLoader({
           50% { opacity: 0.6; }
         }
 
-        /* Pulsing blob indicator */
-        .pulse-blob {
-          width: 52px;
-          height: 52px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, rgba(180, 180, 185, 0.4) 0%, rgba(160, 160, 170, 0.25) 100%);
-          box-shadow:
-            0 0 20px rgba(140, 140, 150, 0.2),
-            0 0 40px rgba(140, 140, 150, 0.1);
-          animation: blobPulse 2.5s ease-in-out infinite;
-        }
-
-        @keyframes blobPulse {
-          0%, 100% {
-            transform: scale(1);
-            box-shadow:
-              0 0 20px rgba(140, 140, 150, 0.2),
-              0 0 40px rgba(140, 140, 150, 0.1);
-          }
-          50% {
-            transform: scale(1.15);
-            box-shadow:
-              0 0 30px rgba(140, 140, 150, 0.3),
-              0 0 60px rgba(140, 140, 150, 0.15);
-          }
-        }
       `}</style>
     </div>
   );

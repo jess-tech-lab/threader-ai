@@ -268,10 +268,10 @@ threader-ai/
 ├── src/                          # Backend (Node.js)
 │   ├── scrapers/
 │   │   ├── redditScraper.js      # Reddit API integration
-│   │   └── subredditDiscovery.js # LLM-powered subreddit finder
 │   ├── analysis/
 │   │   ├── classifier.js         # Feedback classification
 │   │   ├── synthesizer.js        # Strategic synthesis
+│   │   └── subredditDiscovery.js # LLM-powered subreddit finder
 │   │   └── comparer.js           # Trend comparison
 │   ├── db/
 │   │   └── supabase.js           # Database operations

@@ -48,8 +48,8 @@ function DemoContent({ reportUuid }: { reportUuid?: string }) {
 
   return (
     <AnimatePresence mode="wait">
-      {/* Loading state - show minimalist loader */}
-      {status === 'loading' && (
+      {/* Loading/Idle state - show minimalist loader */}
+      {(status === 'loading' || status === 'idle') && (
         <motion.div
           key="loading"
           initial={{ opacity: 1 }}

@@ -121,35 +121,42 @@ export function useDemoMode(props?: UseDemoModeProps): UseDemoModeReturn {
     }
   }, []);
 
-  // Fetch by UUID from Supabase
+  // Fetch by UUID from Supabase using raw fetch (more reliable than JS client)
   const fetchByUuid = useCallback(async (uuid: string): Promise<{ synthesis: SynthesisReportV2; companyName: string } | null> => {
-    if (!isSupabaseConfigured || !supabase) {
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+    const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
       console.warn('[Demo Mode] Supabase not configured for UUID fetch');
       return null;
     }
 
     try {
-      console.log('[Demo Mode] Fetching by UUID:', uuid);
+      const response = await fetch(
+        `${supabaseUrl}/rest/v1/snapshots?id=eq.${uuid}&is_public=eq.true&select=report_data,company_name,created_at`,
+        {
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+          },
+        }
+      );
 
-      const { data, error } = await supabase
-        .from('snapshots')
-        .select('report_data, company_name, created_at')
-        .eq('id', uuid)
-        .eq('is_public', true)
-        .single();
+      if (!response.ok) {
+        console.warn('[Demo Mode] Fetch error:', response.status, response.statusText);
+        return null;
+      }
 
-      if (data && !error) {
-        console.log('[Demo Mode] Found report for:', data.company_name);
+      const data = await response.json();
+
+      if (data && data.length > 0) {
         return {
-          synthesis: data.report_data as SynthesisReportV2,
-          companyName: data.company_name,
+          synthesis: data[0].report_data as SynthesisReportV2,
+          companyName: data[0].company_name,
         };
       }
 
-      if (error) {
-        console.warn('[Demo Mode] UUID fetch error:', error.message);
-      }
-
+      console.warn('[Demo Mode] No data returned for UUID');
       return null;
     } catch (err) {
       console.warn('[Demo Mode] UUID fetch error:', err);
@@ -387,8 +394,6 @@ export function useDemoMode(props?: UseDemoModeProps): UseDemoModeReturn {
 
     // UUID mode takes precedence
     if (isUuidMode && reportUuid) {
-      console.log('[Demo Mode] UUID mode - fetching by UUID:', reportUuid);
-
       setState(prev => ({
         ...prev,
         status: 'loading',

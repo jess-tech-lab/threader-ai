@@ -146,13 +146,12 @@ async function saveSnapshot(tenantId, companyId, companyName, synthesis, metadat
   if (supabaseAdmin) {
     console.log(`[Scout]    Also saving to Supabase...`);
 
-    // Use the new schema with report_data instead of synthesis_data
+    // Use the new schema with report_data
     const snapshot = {
       company_name: companyName,
       report_data: synthesis,
       is_public: true,
       tenant_id: tenantId || 'public',
-      company_id: companyId || null,
     };
 
     try {

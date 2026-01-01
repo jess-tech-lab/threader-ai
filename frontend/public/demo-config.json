@@ -1,28 +1,28 @@
 {
-  "companyName": "Owala",
+  "companyName": "Spotify",
   "synthesis": {
     "summaries": {
-      "tldr": "Owala's feedback indicates minimal usability friction with silicone material, but overall user sentiment is positive.",
+      "tldr": "Spotify's current user feedback indicates minimal high-impact issues, with usability friction in display functionality and premium connectivity being the primary concerns.",
       "highlights": [
-        "Total feedback analyzed: 9, with 1 high-signal input.",
-        "Silicone material usability friction identified with an impact score of 2.1/10.",
-        "No feedback from new, power, or at-risk users.",
-        "Majority of feedback is neutral or praise, indicating stable user satisfaction.",
-        "Minimal constructive feedback suggests low urgency for immediate changes."
+        "Total feedback analyzed: 50, with only 2 high-signal inputs.",
+        "Usability friction in display functionality and premium connectivity noted, each with an impact score of 2.1/10.",
+        "No feedback from new, power, or churned/at-risk users, indicating a potential gap in user engagement.",
+        "Predominantly neutral feedback (42 out of 50), suggesting stable user sentiment.",
+        "Minimal constructive feedback (4 out of 50), indicating few critical issues."
       ],
-      "executiveBrief": "The analysis of recent feedback for Owala reveals a stable user sentiment with minimal usability friction. Out of the 9 pieces of feedback analyzed, only one was high-signal, indicating that the majority of feedback was either neutral or positive. The primary concern identified was related to the silicone material, which was mentioned once and had a low impact score of 2.1 out of 10. This suggests that while there is some usability friction, it is not a significant issue for the majority of users.\n\nInterestingly, there was no feedback from new users, power users, or those at risk of churning, which could indicate a gap in engagement or feedback collection from these segments. The overall sentiment is positive, with users expressing satisfaction with the product, and the constructive feedback being minimal and not urgent. This positions Owala well for strategic improvements rather than immediate fixes."
+      "executiveBrief": "The analysis of recent Spotify user feedback reveals a stable user sentiment with a predominance of neutral feedback (42 out of 50). The feedback highlights minor usability friction in display functionality and premium connectivity, each with a low impact score of 2.1/10. This suggests that while there are areas for improvement, they are not causing significant disruption to the user experience. Notably, there is a lack of feedback from new, power, or churned/at-risk users, which may indicate a gap in engagement or outreach efforts. \n\nThe constructive feedback is minimal, with only 4 mentions, and praise is equally low, suggesting that while users are not facing major issues, they are also not particularly vocal about positive experiences. This presents an opportunity for Spotify to enhance user engagement and satisfaction by addressing the minor usability frictions and exploring ways to better connect with different user segments."
     },
     "sentiment": {
-      "positive": 3,
-      "neutral": 5,
-      "negative": 1,
+      "positive": 8,
+      "neutral": 84,
+      "negative": 8,
       "mood": "Stable",
-      "moodExplanation": "The feedback is predominantly neutral or positive, with only one constructive comment, indicating a stable user sentiment."
+      "moodExplanation": "The sentiment is stable due to the high proportion of neutral feedback (84%), with equal parts positive and negative feedback (8% each), indicating no major disruptions or highlights in user experience."
     },
     "focusAreas": [
       {
         "id": "1",
-        "title": "Silicone Material",
+        "title": "Display Functionality",
         "category": "usability_friction",
         "items": [
           {
@@ -30,26 +30,26 @@
             "category": "Usability Friction",
             "problemMetadata": {
               "rootCause": "Ease",
-              "featureArea": "Silicone Material",
-              "impactType": "Cost to Serve",
+              "featureArea": "Display Functionality",
+              "impactType": "Retention",
               "urgencySignal": "High",
               "prioritization": {
-                "impactScore": 7,
-                "urgencyScore": 8,
+                "impactScore": 8,
+                "urgencyScore": 9,
                 "effortEstimate": 3
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Investigate the silicone material used in the Owala bottles to improve durability and ease of cleaning.",
-              "replyDraft": "Thanks for sharing your experience! It sounds frustrating to deal with that texture issue. We recommend reaching out to our support team for assistance, and we appreciate your feedback as we continuously work to improve our products.",
-              "keyQuote": "I don’t want to buy a new part if I don’t need to because that feels wasteful."
+              "actionableInsight": "Prioritize addressing the display visibility and glare issues to enhance user comfort and satisfaction.",
+              "replyDraft": "Hi there! Thanks for sharing your experience with the Rayban display glasses. It sounds frustrating to deal with visibility and glare issues, especially after such a long wait. We appreciate your feedback and are always looking to improve our products. If you have any more details or suggestions, feel free to share!",
+              "keyQuote": "I thought the advertisements emphasized on how only the person wearing the rayban display can see the display and no one outside."
             },
             "confidence": 0.85,
-            "reasoning": "The feedback indicates a user struggle with the silicone material's durability and cleaning, which falls under usability friction. The user is seeking solutions and expressing concern about waste, highlighting a need for better product performance.",
-            "sourceUrl": "https://i.redd.it/rvag70lemmag1.jpeg",
-            "sourceId": "1q0qkzz",
-            "originalTitle": "Does anyone else have a weird texture on the silicone of their owala?",
+            "reasoning": "The feedback clearly indicates usability issues with the display visibility and glare, which are causing discomfort and dissatisfaction. The user expresses a strong concern about the product's functionality and is contemplating a return, indicating high urgency and impact on retention.",
+            "sourceUrl": "https://www.reddit.com/r/MetaRayBanDisplay/comments/1q1gzae/not_sure_if_i_like_these/",
+            "sourceId": "1q1gzae",
+            "originalTitle": "Not sure if I like these!?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -78,48 +78,108 @@
         ],
         "totalScore": 2.1,
         "quotes": [
-          "I don’t want to buy a new part if I don’t need to because that feels wasteful."
+          "I thought the advertisements emphasized on how only the person wearing the rayban display can see the display and no one outside."
         ],
         "segments": {},
         "frequency": 1,
         "avgImpact": 2.1,
-        "topQuote": "I don’t want to buy a new part if I don’t need to because that feels wasteful.",
+        "topQuote": "I thought the advertisements emphasized on how only the person wearing the rayban display can see the display and no one outside.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
           "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
         },
         "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "Low",
-        "rootCause": "Perceived wastefulness in replacing silicone parts.",
+        "severityLabel": "Medium",
+        "rootCause": "Misalignment between advertisement claims and user experience.",
+        "impactScore": 2.1,
+        "trend": "new",
+        "trendDelta": 0
+      },
+      {
+        "id": "2",
+        "title": "Premium Connectivity",
+        "category": "usability_friction",
+        "items": [
+          {
+            "type": "Constructive",
+            "category": "Support Question",
+            "problemMetadata": {
+              "rootCause": "Certainty",
+              "featureArea": "Premium Connectivity",
+              "impactType": "Retention",
+              "urgencySignal": "High",
+              "prioritization": {
+                "impactScore": 7,
+                "urgencyScore": 8,
+                "effortEstimate": 2
+              }
+            },
+            "delightMetadata": null,
+            "summary": {
+              "actionableInsight": "Investigate the connectivity issues related to Premium Connectivity and provide clearer guidance for users.",
+              "replyDraft": "Hi there! It sounds frustrating to deal with connectivity issues while using Spotify in your car. This isn't the experience we want for our users. We recommend checking your Premium Connectivity settings and ensuring everything is up to date. If the problem persists, please reach out to our support team for further assistance!",
+              "keyQuote": "I have an ongoing issue that I cannot figure out."
+            },
+            "confidence": 0.85,
+            "reasoning": "The feedback clearly indicates a user struggling with connectivity issues related to Spotify in their car, which falls under a support question. The user is seeking clarity on whether this is a normal occurrence or if there is a fix, indicating a need for certainty.",
+            "sourceUrl": "https://www.reddit.com/r/TeslaSupport/comments/1q1gwuh/internet_connectivity_issue/",
+            "sourceId": "1q1gwuh",
+            "originalTitle": "Internet connectivity issue",
+            "signalScore": 0.5999999999999999,
+            "impactData": {
+              "score": 2.1,
+              "maxScore": 10,
+              "breakdown": {
+                "reach": {
+                  "value": 0,
+                  "weight": 0.4
+                },
+                "sentiment": {
+                  "value": 7,
+                  "weight": 0.3
+                },
+                "velocity": {
+                  "value": 0,
+                  "weight": 0.3
+                }
+              },
+              "rationale": "Score based on standard engagement metrics.",
+              "stakes": {
+                "type": "risk",
+                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+              }
+            }
+          }
+        ],
+        "totalScore": 2.1,
+        "quotes": [
+          "I have an ongoing issue that I cannot figure out."
+        ],
+        "segments": {},
+        "frequency": 1,
+        "avgImpact": 2.1,
+        "topQuote": "I have an ongoing issue that I cannot figure out.",
+        "affectedSegments": [],
+        "stakes": {
+          "type": "risk",
+          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+        },
+        "scoreRationale": "Score based on standard engagement metrics.",
+        "severityLabel": "Medium",
+        "rootCause": "Complexity in premium service connectivity settings.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       }
     ],
     "brandStrengths": {
-      "overallScore": 7.5,
-      "topLoves": [
-        {
-          "feature": "Durability",
-          "quote": "The bottle lasts forever, even with daily use.",
-          "shareability": 8
-        },
-        {
-          "feature": "Design",
-          "quote": "I love the sleek and modern design.",
-          "shareability": 7
-        },
-        {
-          "feature": "Functionality",
-          "quote": "The lid mechanism is genius and so easy to use.",
-          "shareability": 9
-        }
-      ],
+      "overallScore": 7,
+      "topLoves": [],
       "brandPersonality": [
         "Reliable",
         "Innovative",
-        "Eco-conscious"
+        "User-friendly"
       ]
     },
     "suggestedOKRs": [
@@ -127,36 +187,41 @@
         "theme": "User Engagement",
         "objective": "Increase feedback from diverse user segments.",
         "keyResults": [
-          "Collect feedback from at least 50 new users.",
-          "Engage 30 power users for detailed feedback.",
-          "Identify and survey 20 at-risk users."
-        ],
-        "timeframe": "Q1"
-      },
-      {
-        "theme": "Sustainability",
-        "objective": "Reduce perceived wastefulness of product components.",
-        "keyResults": [
-          "Develop a recycling program for silicone parts.",
-          "Launch an educational campaign on sustainability efforts.",
-          "Increase user awareness by 30% through targeted communications."
+          "Conduct targeted surveys for new, power, and churned users.",
+          "Increase feedback volume from these segments by 20% by end of Q2."
         ],
         "timeframe": "Q2"
       },
       {
-        "theme": "Product Usability",
-        "objective": "Enhance user experience with silicone components.",
+        "theme": "Usability Improvement",
+        "objective": "Enhance display functionality and premium connectivity experience.",
         "keyResults": [
-          "Conduct usability testing with 100 users.",
-          "Implement design improvements based on feedback.",
-          "Achieve a 20% increase in user satisfaction with silicone parts."
+          "Reduce usability friction reports by 50% by end of Q3.",
+          "Implement two new features addressing identified frictions by Q3."
         ],
         "timeframe": "Q3"
+      },
+      {
+        "theme": "Brand Perception",
+        "objective": "Boost positive user sentiment and brand advocacy.",
+        "keyResults": [
+          "Increase positive feedback by 10% by end of Q4.",
+          "Launch a campaign highlighting user success stories by Q4."
+        ],
+        "timeframe": "Q4"
       }
     ],
     "priorityMatrix": [
       {
-        "title": "Silicone Material",
+        "title": "Display Functionality",
+        "category": "usability_friction",
+        "impactScore": 2.1,
+        "effortEstimate": "Quick Win",
+        "quadrant": "Quick Wins",
+        "frequency": 1
+      },
+      {
+        "title": "Premium Connectivity",
         "category": "usability_friction",
         "impactScore": 2.1,
         "effortEstimate": "Quick Win",
@@ -166,24 +231,56 @@
     ],
     "expectationGaps": [
       {
-        "expectation": "Users expect durable and sustainable components.",
-        "reality": "Perceived wastefulness in replacing silicone parts.",
-        "gapSeverity": "Low",
-        "suggestedFix": "Introduce a recycling program and educate users on sustainability."
+        "expectation": "Advertisements claim exclusive visibility of display content to the wearer.",
+        "reality": "Users report that the display is visible to others, contradicting claims.",
+        "gapSeverity": "Medium",
+        "suggestedFix": "Clarify advertisement messaging to accurately reflect product capabilities."
+      },
+      {
+        "expectation": "Seamless premium connectivity experience.",
+        "reality": "Users face ongoing issues with connectivity settings.",
+        "gapSeverity": "Medium",
+        "suggestedFix": "Simplify connectivity settings and provide clearer user guidance."
       }
     ],
     "metadata": {
-      "totalAnalyzed": 9,
-      "highSignalCount": 1,
-      "noiseFiltered": 8,
+      "totalAnalyzed": 50,
+      "highSignalCount": 2,
+      "noiseFiltered": 48,
       "dataSources": [
         "Reddit"
       ],
-      "analysisDate": "2026-01-01T21:12:08.237Z"
+      "analysisDate": "2026-01-01T22:54:07.395Z"
     },
     "rawScores": [
       {
-        "id": "1q0qkzz",
+        "id": "1q1gzae",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1q1gwuh",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -211,7 +308,7 @@
     ]
   },
   "metadata": {
-    "totalAnalyzed": 9,
+    "totalAnalyzed": 50,
     "dataSources": [
       "reddit"
     ],
@@ -219,6 +316,6 @@
     "created_by": "terminal_scout",
     "version": "2.0"
   },
-  "lastUpdated": "2026-01-01T21:12:08.238Z",
+  "lastUpdated": "2026-01-01T22:54:07.396Z",
   "note": "Auto-generated by scout command. Frontend will load this when ?company matches."
 }

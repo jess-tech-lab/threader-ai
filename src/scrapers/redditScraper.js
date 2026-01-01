@@ -10,32 +10,75 @@ import { discoverSubreddits, quickDiscoverSubreddits } from '../analysis/subredd
 
 dotenv.config();
 
-// User agent for Reddit API requests (required by Reddit)
-const USER_AGENT = 'ThreaderAI/1.0.0 (Product Feedback Analyzer)';
+// User agent - use a browser-like UA to avoid blocks
+const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
 
 // Rate limiting: Reddit allows ~60 requests per minute for unauthenticated requests
-const RATE_LIMIT_DELAY = 1000; // 1 second between requests
+const RATE_LIMIT_DELAY = 2000; // 2 seconds between requests to be safe
+
+/**
+ * Sleep helper
+ */
+const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /**
  * Make a rate-limited request to Reddit's JSON API
  * @param {string} url - The Reddit URL to fetch
+ * @param {number} retries - Number of retry attempts
  * @returns {Promise<Object>} JSON response
  */
-async function fetchRedditJson(url) {
+async function fetchRedditJson(url, retries = 3) {
   // Ensure URL ends with .json
   const jsonUrl = url.includes('.json') ? url : `${url}.json`;
 
-  const response = await fetch(jsonUrl, {
-    headers: {
-      'User-Agent': USER_AGENT,
-    },
-  });
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      // Add a small random delay to look more human
+      await sleep(Math.random() * 1000 + 500);
 
-  if (!response.ok) {
-    throw new Error(`Reddit API error: ${response.status} ${response.statusText}`);
+      const response = await fetch(jsonUrl, {
+        headers: {
+          'User-Agent': USER_AGENT,
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.5',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive',
+          'Upgrade-Insecure-Requests': '1',
+          'Sec-Fetch-Dest': 'document',
+          'Sec-Fetch-Mode': 'navigate',
+          'Sec-Fetch-Site': 'none',
+          'Sec-Fetch-User': '?1',
+          'Cache-Control': 'max-age=0',
+        },
+      });
+
+      if (response.status === 429) {
+        // Rate limited - wait and retry
+        console.log(`[RedditScraper] Rate limited, waiting 30s before retry ${attempt}/${retries}...`);
+        await sleep(30000);
+        continue;
+      }
+
+      if (response.status === 403) {
+        // Blocked - wait longer and retry with different approach
+        console.log(`[RedditScraper] Blocked (403), waiting 10s before retry ${attempt}/${retries}...`);
+        await sleep(10000);
+        continue;
+      }
+
+      if (!response.ok) {
+        throw new Error(`Reddit API error: ${response.status} ${response.statusText}`);
+      }
+
+      return response.json();
+    } catch (error) {
+      if (attempt === retries) {
+        throw error;
+      }
+      console.log(`[RedditScraper] Request failed, retrying... (${attempt}/${retries})`);
+      await sleep(5000);
+    }
   }
-
-  return response.json();
 }
 
 /**

@@ -59,7 +59,7 @@ const problemMetadataSchema = z.object({
 
 // Delight Metadata (for Praise feedback)
 const delightMetadataSchema = z.object({
-  ahaMonent: z.string().describe('Describe exactly what made the user happy - the specific feature or experience'),
+  ahaMoment: z.string().describe('Describe exactly what made the user happy - the specific feature or experience'),
 
   valuePropValidation: z.string().describe('Which marketing claim or value proposition does this praise prove true?'),
 
@@ -394,7 +394,7 @@ export function generateExecutiveSummary(classifiedResults, companyName) {
     })),
     topTestimonials: topTestimonials.map(item => ({
       quote: item.summary.keyQuote,
-      ahaMonent: item.delightMetadata.ahaMonent,
+      ahaMoment: item.delightMetadata.ahaMoment,
       valuePropValidation: item.delightMetadata.valuePropValidation,
       shareability: item.delightMetadata.shareability,
       sourceUrl: item.sourceUrl,
@@ -490,7 +490,7 @@ async function main() {
 
     if (result.delightMetadata) {
       console.log(`\nDelight Analysis:`);
-      console.log(`  Aha! Moment: ${result.delightMetadata.ahaMonent}`);
+      console.log(`  Aha! Moment: ${result.delightMetadata.ahaMoment}`);
       console.log(`  Value Prop: ${result.delightMetadata.valuePropValidation}`);
       console.log(`  Shareability: ${result.delightMetadata.shareability}/10`);
     }

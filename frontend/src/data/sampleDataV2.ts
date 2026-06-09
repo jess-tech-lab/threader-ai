@@ -278,7 +278,7 @@ export const sampleFeedbackItemsV2: FeedbackItem[] = [
       category: 'N/A',
       problemMetadata: null,
       delightMetadata: {
-        ahaMonent: 'AI summarization',
+        ahaMoment: 'AI summarization',
         valuePropValidation: 'Time savings',
         shareability: 9,
         testimonialQuote: 'What would have taken me 2 hours took 30 seconds',

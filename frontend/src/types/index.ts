@@ -265,7 +265,7 @@ export interface ProblemMetadata {
 }
 
 export interface DelightMetadata {
-  ahaMonent: string;
+  ahaMoment: string;
   valuePropValidation: string;
   shareability: number;
   testimonialQuote: string;

@@ -291,7 +291,7 @@ function clusterIntoFocusAreas(items) {
 
   for (const item of items) {
     const featureArea = item.problemMetadata?.featureArea ||
-                        item.delightMetadata?.ahaMonent ||
+                        item.delightMetadata?.ahaMoment ||
                         'General';
 
     // Map category to focus area type
@@ -682,7 +682,7 @@ async function main() {
       type: 'Praise',
       category: 'N/A',
       delightMetadata: {
-        ahaMonent: 'AI Features',
+        ahaMoment: 'AI Features',
         shareability: 9,
       },
       summary: { keyQuote: 'AI saved me hours of work!' },

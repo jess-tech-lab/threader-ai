@@ -9,7 +9,6 @@
     "diagnose": "node scripts/diagnose.js",
     "set-demo": "node scripts/set-demo.js",
     "scrape:reddit": "node src/scrapers/redditScraper.js",
-    "scrape:twitter": "node src/scrapers/twitterScraper.js",
     "analyze": "node src/analysis/classifier.js",
     "synthesize": "node src/analysis/synthesizer.js",
     "pipeline": "node src/pipeline.js",
@@ -21,7 +20,7 @@
     "product-analytics",
     "langchain"
   ],
-  "author": "",
+  "author": "jess-tech-lab",
   "license": "ISC",
   "dependencies": {
     "@langchain/core": "^1.1.8",

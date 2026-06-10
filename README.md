@@ -141,7 +141,7 @@ Where:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/threader-ai.git
+git clone https://github.com/jess-tech-lab/threader-ai.git
 cd threader-ai
 
 # Install backend dependencies

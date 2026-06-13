@@ -591,7 +591,7 @@ export function formatSynthesisReport(synthesis, companyName) {
   const lines = [];
 
   lines.push('═'.repeat(70));
-  lines.push(`  PULSE AI STRATEGIC REPORT: ${companyName.toUpperCase()}`);
+  lines.push(`  THREADER AI STRATEGIC REPORT: ${companyName.toUpperCase()}`);
   lines.push(`  Generated: ${synthesis.metadata?.analysisDate || new Date().toISOString()}`);
   lines.push('═'.repeat(70));
 

@@ -38,10 +38,10 @@
 # INSTALLATION
 # ================================
 # 1. Clone the repository
-#    git clone https://github.com/yourusername/pulseai.git
+#    git clone https://github.com/jess-tech-lab/threader-ai.git
 #
 # 2. Install backend dependencies
-#    cd pulseai && npm install
+#    cd threader-ai && npm install
 #
 # 3. Install frontend dependencies
 #    cd frontend && npm install

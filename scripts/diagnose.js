@@ -39,7 +39,7 @@ function header(message) { log(`\n${'═'.repeat(60)}\n${message}\n${'═'.repea
 async function diagnose() {
   const companyName = process.argv[2] || 'TestCompany';
 
-  header('PULSE AI - DIAGNOSTIC TOOL');
+  header('THREADER AI - DIAGNOSTIC TOOL');
   log(`Testing pipeline for: ${companyName}\n`);
 
   let issues = [];

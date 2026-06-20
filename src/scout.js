@@ -164,7 +164,7 @@ async function saveSnapshot(tenantId, companyId, companyName, synthesis, metadat
       if (error) {
         if (error.code === '42P01') {
           console.warn('[Scout] ⚠️  Supabase snapshots table does not exist');
-          console.warn('[Scout]    Run the migration: supabase/migrations/001_create_snapshots_table.sql');
+          console.warn('[Scout]    Run the migration: sql/migrations/001_create_snapshots_table.sql');
         } else {
           console.warn(`[Scout] ⚠️  Supabase save failed: ${error.message}`);
         }

@@ -1,21 +1,6 @@
-/**
- * Threader AI - Differential Analysis Engine
- * Compares current analysis with previous snapshots to identify trends
- */
-
-/**
- * Compare current synthesis with previous snapshot
- * @param {Object} current - Current synthesis result
- * @param {Object} previous - Previous snapshot
- * @returns {Object} Differential analysis
- */
 export function compareSyntheses(current, previous) {
   if (!previous) {
-    return {
-      isFirstRun: true,
-      changes: null,
-      trends: null,
-    };
+    return { isFirstRun: true, changes: null, trends: null };
   }
 
   const changes = {
@@ -26,31 +11,23 @@ export function compareSyntheses(current, previous) {
     stableIssues: [],
   };
 
-  const currentAreas = new Map(
-    current.focusAreas.map(fa => [`${fa.category}:${fa.title}`, fa])
-  );
-  const previousAreas = new Map(
-    previous.focusAreas.map(fa => [`${fa.category}:${fa.title}`, fa])
-  );
+  const currentAreas = new Map(current.focusAreas.map(fa => [`${fa.category}:${fa.title}`, fa]));
+  const previousAreas = new Map(previous.focusAreas.map(fa => [`${fa.category}:${fa.title}`, fa]));
 
-  // Find new and changed issues
   for (const [key, currentArea] of currentAreas) {
     const previousArea = previousAreas.get(key);
 
     if (!previousArea) {
-      // New issue
       changes.newIssues.push({
         ...currentArea,
         changeType: 'new',
         insight: `New ${currentArea.category.replace('_', ' ')} detected: "${currentArea.title}"`,
       });
     } else {
-      // Compare frequencies and impact
       const freqDelta = currentArea.frequency - previousArea.frequency;
       const impactDelta = (currentArea.impactScore || 0) - (previousArea.impactScore || 0);
 
       if (freqDelta < -2 || impactDelta < -1) {
-        // Improved (less frequent/severe)
         changes.improvedIssues.push({
           ...currentArea,
           changeType: 'improved',
@@ -60,7 +37,6 @@ export function compareSyntheses(current, previous) {
           insight: `"${currentArea.title}" has improved: ${Math.abs(freqDelta)} fewer mentions`,
         });
       } else if (freqDelta > 2 || impactDelta > 1) {
-        // Worsened (more frequent/severe)
         changes.worsenedIssues.push({
           ...currentArea,
           changeType: 'worsened',
@@ -70,7 +46,6 @@ export function compareSyntheses(current, previous) {
           insight: `"${currentArea.title}" is growing: +${freqDelta} more mentions`,
         });
       } else {
-        // Stable
         changes.stableIssues.push({
           ...currentArea,
           changeType: 'stable',
@@ -82,7 +57,6 @@ export function compareSyntheses(current, previous) {
     }
   }
 
-  // Find resolved issues (in previous but not in current)
   for (const [key, previousArea] of previousAreas) {
     if (!currentAreas.has(key)) {
       changes.resolvedIssues.push({
@@ -93,7 +67,6 @@ export function compareSyntheses(current, previous) {
     }
   }
 
-  // Calculate overall trends
   const trends = calculateOverallTrends(current, previous, changes);
 
   return {
@@ -106,34 +79,18 @@ export function compareSyntheses(current, previous) {
   };
 }
 
-/**
- * Calculate overall trend metrics
- */
 function calculateOverallTrends(current, previous, changes) {
-  // Sentiment trend
-  const sentimentTrend = calculateSentimentTrend(
-    current.sentiment,
-    previous.sentiment
-  );
+  const sentimentTrend = calculateSentimentTrend(current.sentiment, previous.sentiment);
 
-  // Volume trend
   const volumeTrend = {
     current: current.metadata?.totalAnalyzed || 0,
     previous: previous.metadata?.totalAnalyzed || 0,
     delta: (current.metadata?.totalAnalyzed || 0) - (previous.metadata?.totalAnalyzed || 0),
-    direction: calculateDirection(
-      current.metadata?.totalAnalyzed || 0,
-      previous.metadata?.totalAnalyzed || 0
-    ),
+    direction: calculateDirection(current.metadata?.totalAnalyzed || 0, previous.metadata?.totalAnalyzed || 0),
   };
 
-  // Issue resolution rate
-  const resolutionRate = changes.resolvedIssues.length /
-    (previous.focusAreas?.length || 1) * 100;
-
-  // New issue rate
-  const newIssueRate = changes.newIssues.length /
-    (current.focusAreas?.length || 1) * 100;
+  const resolutionRate = changes.resolvedIssues.length / (previous.focusAreas?.length || 1) * 100;
+  const newIssueRate = changes.newIssues.length / (current.focusAreas?.length || 1) * 100;
 
   return {
     sentiment: sentimentTrend,
@@ -144,173 +101,91 @@ function calculateOverallTrends(current, previous, changes) {
   };
 }
 
-/**
- * Calculate sentiment trend
- */
 function calculateSentimentTrend(current, previous) {
   if (!current || !previous) return null;
 
-  const currentPositiveRatio = current.positive / 100;
-  const previousPositiveRatio = previous.positive / 100;
-  const delta = currentPositiveRatio - previousPositiveRatio;
+  const delta = (current.positive / 100) - (previous.positive / 100);
 
   return {
-    current: {
-      positive: current.positive,
-      neutral: current.neutral,
-      negative: current.negative,
-      mood: current.mood,
-    },
-    previous: {
-      positive: previous.positive,
-      neutral: previous.neutral,
-      negative: previous.negative,
-      mood: previous.mood,
-    },
+    current: { positive: current.positive, neutral: current.neutral, negative: current.negative, mood: current.mood },
+    previous: { positive: previous.positive, neutral: previous.neutral, negative: previous.negative, mood: previous.mood },
     delta: Math.round(delta * 100),
     direction: delta > 0.02 ? 'improving' : delta < -0.02 ? 'declining' : 'stable',
     moodChange: current.mood !== previous.mood,
   };
 }
 
-/**
- * Calculate direction from values
- */
 function calculateDirection(current, previous) {
-  const delta = current - previous;
-  const percentChange = previous > 0 ? (delta / previous) * 100 : 0;
-
+  const percentChange = previous > 0 ? ((current - previous) / previous) * 100 : 0;
   if (percentChange > 10) return 'up';
   if (percentChange < -10) return 'down';
   return 'stable';
 }
 
-/**
- * Calculate overall health score
- */
+// Score starts at 50, adjusted by sentiment, resolved/worsened issues
 function calculateHealthScore(sentimentTrend, changes) {
-  let score = 50; // Base score
+  let score = 50;
 
-  // Adjust for sentiment
   if (sentimentTrend?.direction === 'improving') score += 15;
   if (sentimentTrend?.direction === 'declining') score -= 15;
 
-  // Adjust for resolved issues
   score += changes.resolvedIssues.length * 5;
-
-  // Penalize for new critical issues
-  const criticalNew = changes.newIssues.filter(
-    i => i.severityLabel === 'Critical'
-  ).length;
-  score -= criticalNew * 10;
-
-  // Penalize for worsening issues
+  score += changes.improvedIssues.length * 3;
   score -= changes.worsenedIssues.length * 3;
 
-  // Bonus for improved issues
-  score += changes.improvedIssues.length * 3;
+  const criticalNew = changes.newIssues.filter(i => i.severityLabel === 'Critical').length;
+  score -= criticalNew * 10;
 
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
-/**
- * Generate human-readable change summary
- */
 function generateChangeSummary(changes, trends) {
   const parts = [];
 
-  // New issues
   if (changes.newIssues.length > 0) {
     const critical = changes.newIssues.filter(i => i.severityLabel === 'Critical');
-    if (critical.length > 0) {
-      parts.push(`${critical.length} new critical issue(s) detected`);
-    } else {
-      parts.push(`${changes.newIssues.length} new issue(s) emerged`);
-    }
+    parts.push(critical.length > 0
+      ? `${critical.length} new critical issue(s) detected`
+      : `${changes.newIssues.length} new issue(s) emerged`
+    );
   }
 
-  // Improved
-  if (changes.improvedIssues.length > 0) {
-    parts.push(`${changes.improvedIssues.length} issue(s) showing improvement`);
-  }
+  if (changes.improvedIssues.length > 0) parts.push(`${changes.improvedIssues.length} issue(s) showing improvement`);
+  if (changes.worsenedIssues.length > 0) parts.push(`${changes.worsenedIssues.length} issue(s) getting worse`);
+  if (changes.resolvedIssues.length > 0) parts.push(`${changes.resolvedIssues.length} issue(s) resolved`);
 
-  // Worsened
-  if (changes.worsenedIssues.length > 0) {
-    parts.push(`${changes.worsenedIssues.length} issue(s) getting worse`);
-  }
+  if (trends?.sentiment?.direction === 'improving') parts.push('overall sentiment improving');
+  else if (trends?.sentiment?.direction === 'declining') parts.push('overall sentiment declining');
 
-  // Resolved
-  if (changes.resolvedIssues.length > 0) {
-    parts.push(`${changes.resolvedIssues.length} issue(s) resolved`);
-  }
-
-  // Sentiment
-  if (trends?.sentiment?.direction === 'improving') {
-    parts.push('overall sentiment improving');
-  } else if (trends?.sentiment?.direction === 'declining') {
-    parts.push('overall sentiment declining');
-  }
-
-  return parts.length > 0
-    ? parts.join(', ') + '.'
-    : 'No significant changes detected.';
+  return parts.length > 0 ? parts.join(', ') + '.' : 'No significant changes detected.';
 }
 
-/**
- * Get what's new since last snapshot
- */
 export function getWhatsNew(comparison) {
-  if (comparison.isFirstRun) {
-    return {
-      headline: 'First Analysis Run',
-      items: [],
-    };
-  }
+  if (comparison.isFirstRun) return { headline: 'First Analysis Run', items: [] };
 
   const items = [];
 
-  // Add new issues
   for (const issue of comparison.changes.newIssues) {
-    items.push({
-      type: 'new_issue',
-      severity: issue.severityLabel || 'Medium',
-      title: issue.title,
-      category: issue.category,
-      insight: issue.insight,
-    });
+    items.push({ type: 'new_issue', severity: issue.severityLabel || 'Medium', title: issue.title, category: issue.category, insight: issue.insight });
   }
 
-  // Add significantly improved
   for (const issue of comparison.changes.improvedIssues) {
     if (Math.abs(issue.frequencyDelta) >= 3) {
-      items.push({
-        type: 'improvement',
-        title: issue.title,
-        delta: issue.frequencyDelta,
-        insight: issue.insight,
-      });
+      items.push({ type: 'improvement', title: issue.title, delta: issue.frequencyDelta, insight: issue.insight });
     }
   }
 
-  // Add resolved
   for (const issue of comparison.changes.resolvedIssues) {
-    items.push({
-      type: 'resolved',
-      title: issue.title,
-      insight: issue.insight,
-    });
+    items.push({ type: 'resolved', title: issue.title, insight: issue.insight });
   }
 
   return {
     headline: comparison.summary,
-    items: items.slice(0, 10), // Top 10 changes
+    items: items.slice(0, 10),
     healthScore: comparison.trends?.overallHealth || 50,
   };
 }
 
-/**
- * Get items that have improved
- */
 export function getWhatsImproved(comparison) {
   if (comparison.isFirstRun) return [];
 
@@ -325,55 +200,24 @@ export function getWhatsImproved(comparison) {
   }));
 }
 
-/**
- * Attach trend data to focus areas
- */
 export function attachTrendData(focusAreas, comparison) {
   if (comparison.isFirstRun) {
-    return focusAreas.map(fa => ({
-      ...fa,
-      trend: 'new',
-      trendDelta: 0,
-    }));
+    return focusAreas.map(fa => ({ ...fa, trend: 'new', trendDelta: 0 }));
   }
 
   return focusAreas.map(fa => {
     const key = `${fa.category}:${fa.title}`;
+    const improved = comparison.changes.improvedIssues.find(i => `${i.category}:${i.title}` === key);
+    const worsened = comparison.changes.worsenedIssues.find(i => `${i.category}:${i.title}` === key);
+    const newIssue = comparison.changes.newIssues.find(i => `${i.category}:${i.title}` === key);
+    const stable = comparison.changes.stableIssues.find(i => `${i.category}:${i.title}` === key);
 
-    // Check in various change categories
-    const improved = comparison.changes.improvedIssues.find(
-      i => `${i.category}:${i.title}` === key
-    );
-    const worsened = comparison.changes.worsenedIssues.find(
-      i => `${i.category}:${i.title}` === key
-    );
-    const newIssue = comparison.changes.newIssues.find(
-      i => `${i.category}:${i.title}` === key
-    );
-    const stable = comparison.changes.stableIssues.find(
-      i => `${i.category}:${i.title}` === key
-    );
-
-    if (newIssue) {
-      return { ...fa, trend: 'new', trendDelta: fa.frequency };
-    }
-    if (improved) {
-      return { ...fa, trend: 'down', trendDelta: improved.frequencyDelta };
-    }
-    if (worsened) {
-      return { ...fa, trend: 'up', trendDelta: worsened.frequencyDelta };
-    }
-    if (stable) {
-      return { ...fa, trend: 'stable', trendDelta: stable.frequencyDelta };
-    }
-
+    if (newIssue) return { ...fa, trend: 'new', trendDelta: fa.frequency };
+    if (improved) return { ...fa, trend: 'down', trendDelta: improved.frequencyDelta };
+    if (worsened) return { ...fa, trend: 'up', trendDelta: worsened.frequencyDelta };
+    if (stable) return { ...fa, trend: 'stable', trendDelta: stable.frequencyDelta };
     return { ...fa, trend: 'stable', trendDelta: 0 };
   });
 }
 
-export default {
-  compareSyntheses,
-  getWhatsNew,
-  getWhatsImproved,
-  attachTrendData,
-};
+export default { compareSyntheses, getWhatsNew, getWhatsImproved, attachTrendData };

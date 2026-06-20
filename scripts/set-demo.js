@@ -52,9 +52,9 @@ function parseArgs() {
 function printHelp() {
   console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
-║                  Threader AI - Demo Setup                         ║
+║                  Threader AI - Demo Setup                     ║
 ╠═══════════════════════════════════════════════════════════════╣
-║  Prepare a demo for client outreach                            ║
+║  Prepare a demo for client outreach                           ║
 ╚═══════════════════════════════════════════════════════════════╝
 
 Usage:
@@ -195,9 +195,9 @@ async function main() {
 
   console.log(`
 ╔═══════════════════════════════════════════════════════════════╗
-║                  Threader AI - Demo Setup                         ║
+║                  Threader AI - Demo Setup                     ║
 ╠═══════════════════════════════════════════════════════════════╣
-║  Company: ${args.companyName.padEnd(50)}║
+║  Company: ${args.companyName.padEnd(50)}                      ║
 ╚═══════════════════════════════════════════════════════════════╝
 `);
 
@@ -228,12 +228,12 @@ async function main() {
 
   // Print success message
   console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║                    Demo Ready!                                  ║
-╠═══════════════════════════════════════════════════════════════╣
-║  Company: ${args.companyName.padEnd(50)}║
-║  Data:    ${(synthesis ? 'Fresh from scout' : 'Sample data').padEnd(50)}║
-╚═══════════════════════════════════════════════════════════════╝
+╔══════════════════════════════════════════════════════════════════════════╗
+║                    Demo Ready!                                           ║
+╠══════════════════════════════════════════════════════════════════════════╣
+║  Company: ${args.companyName.padEnd(50)}                                 ║
+║  Data:    ${(synthesis ? 'Fresh from scout' : 'Sample data').padEnd(50)} ║
+╚══════════════════════════════════════════════════════════════════════════╝
 
 Next steps:
   1. Start the frontend:

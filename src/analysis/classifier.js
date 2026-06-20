@@ -1,8 +1,3 @@
-/**
- * Threader AI - Senior Product Strategist Classifier
- * Analyzes product feedback and returns structured strategic insights
- */
-
 import { ChatOpenAI } from '@langchain/openai';
 import { ChatPromptTemplate } from '@langchain/core/prompts';
 import { z } from 'zod';
@@ -10,46 +5,21 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Initialize the LLM
 const llm = new ChatOpenAI({
   modelName: 'gpt-4o-mini',
   temperature: 0.1,
 });
 
-// ============================================================================
-// SCHEMA DEFINITIONS
-// ============================================================================
-
-// Problem Metadata (for Constructive feedback)
 const problemMetadataSchema = z.object({
   rootCause: z.enum([
-    'Speed',
-    'Certainty',
-    'Ease',
-    'Control',
-    'Status',
-    'Trust',
-    'Cost',
-    'Integration',
-    'Reliability',
-    'Other',
+    'Speed', 'Certainty', 'Ease', 'Control', 'Status',
+    'Trust', 'Cost', 'Integration', 'Reliability', 'Other',
   ]).describe('The underlying human need driving this feedback'),
-
   featureArea: z.string().describe('The product area affected (e.g., Onboarding, Checkout, Mobile, Dashboard, API, Settings)'),
-
-  impactType: z.enum([
-    'Revenue',
-    'Retention',
-    'Brand Trust',
-    'Cost to Serve',
-  ]).describe('Primary business impact of this issue'),
-
-  urgencySignal: z.enum([
-    'Critical',
-    'High',
-    'Low',
-  ]).describe('How urgent is addressing this feedback'),
-
+  impactType: z.enum(['Revenue', 'Retention', 'Brand Trust', 'Cost to Serve'])
+    .describe('Primary business impact of this issue'),
+  urgencySignal: z.enum(['Critical', 'High', 'Low'])
+    .describe('How urgent is addressing this feedback'),
   prioritization: z.object({
     impactScore: z.number().min(1).max(10).describe('Business impact score (1=minimal, 10=critical)'),
     urgencyScore: z.number().min(1).max(10).describe('Time sensitivity (1=can wait, 10=immediate)'),
@@ -57,54 +27,26 @@ const problemMetadataSchema = z.object({
   }).describe('Prioritization scores for product roadmap'),
 });
 
-// Delight Metadata (for Praise feedback)
 const delightMetadataSchema = z.object({
   ahaMoment: z.string().describe('Describe exactly what made the user happy - the specific feature or experience'),
-
   valuePropValidation: z.string().describe('Which marketing claim or value proposition does this praise prove true?'),
-
   shareability: z.number().min(1).max(10).describe('How good would this be for a marketing testimonial? (1=not usable, 10=perfect testimonial)'),
 });
 
-// Main classification schema
 const classificationSchema = z.object({
-  // Primary Classification
-  type: z.enum([
-    'Constructive',
-    'Praise',
-    'Neutral',
-  ]).describe('Primary feedback type'),
-
-  category: z.enum([
-    'Feature Request',
-    'Usability Friction',
-    'Support Question',
-    'Rant/Opinion',
-    'N/A',
-  ]).describe('Category for Constructive feedback, N/A for others'),
-
-  // Conditional Metadata
+  type: z.enum(['Constructive', 'Praise', 'Neutral']).describe('Primary feedback type'),
+  category: z.enum(['Feature Request', 'Usability Friction', 'Support Question', 'Rant/Opinion', 'N/A'])
+    .describe('Category for Constructive feedback, N/A for others'),
   problemMetadata: problemMetadataSchema.nullable().describe('Detailed problem analysis (only for Constructive type)'),
-
   delightMetadata: delightMetadataSchema.nullable().describe('Delight analysis (only for Praise type)'),
-
-  // Output Summary
   summary: z.object({
     actionableInsight: z.string().describe('A 1-sentence strategic recommendation for the product team'),
-
     replyDraft: z.string().describe('A context-aware, empathetic response suitable for social media (2-3 sentences)'),
-
     keyQuote: z.string().describe('The most impactful quote from the feedback (verbatim if possible)'),
   }),
-
-  // Metadata
   confidence: z.number().min(0).max(1).describe('Classification confidence score'),
   reasoning: z.string().describe('Brief explanation of the classification decisions'),
 });
-
-// ============================================================================
-// PROMPT TEMPLATE
-// ============================================================================
 
 const classificationPrompt = ChatPromptTemplate.fromMessages([
   ['system', `You are a Senior Product Strategist at a world-class product analytics firm. Your job is to analyze user feedback from social media and forums, extracting strategic insights that drive product decisions.
@@ -179,19 +121,9 @@ Always provide:
 Provide your strategic analysis.`],
 ]);
 
-// Create the structured output chain
 const structuredLlm = llm.withStructuredOutput(classificationSchema);
 const classificationChain = classificationPrompt.pipe(structuredLlm);
 
-// ============================================================================
-// CLASSIFICATION FUNCTIONS
-// ============================================================================
-
-/**
- * Classify a single feedback item with strategic analysis
- * @param {Object} feedbackItem - The feedback item to classify
- * @returns {Promise<Object>} Strategic classification result
- */
 export async function classifyFeedback(feedbackItem) {
   try {
     const result = await classificationChain.invoke({
@@ -231,16 +163,10 @@ export async function classifyFeedback(feedbackItem) {
   }
 }
 
-/**
- * Classify multiple feedback items with rate limiting
- * @param {Array} feedbackItems - Array of feedback items
- * @param {Object} options - Configuration options
- * @returns {Promise<Object>} Classified results with summary stats
- */
 export async function classifyFeedbackBatch(feedbackItems, options = {}) {
   const { batchSize = 5, onProgress = null } = options;
 
-  console.log(`[Classifier] Analyzing ${feedbackItems.length} items as Senior Product Strategist...`);
+  console.log(`[Classifier] Analyzing ${feedbackItems.length} items...`);
 
   const results = {
     items: [],
@@ -265,17 +191,13 @@ export async function classifyFeedbackBatch(feedbackItems, options = {}) {
     const batchNum = Math.floor(i / batchSize) + 1;
     const totalBatches = Math.ceil(feedbackItems.length / batchSize);
 
-    console.log(`[Classifier] Processing batch ${batchNum}/${totalBatches}...`);
+    console.log(`[Classifier] Batch ${batchNum}/${totalBatches}...`);
 
-    const batchResults = await Promise.all(
-      batch.map(item => classifyFeedback(item))
-    );
+    const batchResults = await Promise.all(batch.map(item => classifyFeedback(item)));
 
-    // Process results and update stats
     for (const result of batchResults) {
       results.items.push(result);
 
-      // Update type counts
       if (result.type === 'Constructive') {
         results.stats.constructive++;
         results.stats.byCategory[result.category] = (results.stats.byCategory[result.category] || 0) + 1;
@@ -296,42 +218,28 @@ export async function classifyFeedbackBatch(feedbackItems, options = {}) {
     }
 
     if (onProgress) {
-      onProgress({
-        processed: Math.min(i + batchSize, feedbackItems.length),
-        total: feedbackItems.length,
-      });
+      onProgress({ processed: Math.min(i + batchSize, feedbackItems.length), total: feedbackItems.length });
     }
 
-    // Rate limiting between batches
     if (i + batchSize < feedbackItems.length) {
       await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
 
-  // Calculate averages
   if (scoredCount > 0) {
     results.stats.avgImpactScore = Math.round((impactSum / scoredCount) * 10) / 10;
     results.stats.avgUrgencyScore = Math.round((urgencySum / scoredCount) * 10) / 10;
   }
 
-  console.log(`[Classifier] Analysis complete!`);
-  console.log(`  Constructive: ${results.stats.constructive}`);
-  console.log(`  Praise: ${results.stats.praise}`);
-  console.log(`  Neutral: ${results.stats.neutral}`);
+  console.log(`[Classifier] Done — Constructive: ${results.stats.constructive}, Praise: ${results.stats.praise}, Neutral: ${results.stats.neutral}`);
 
   return results;
 }
 
-/**
- * Generate an executive summary from classified feedback
- * @param {Object} classifiedResults - Results from classifyFeedbackBatch
- * @param {string} companyName - The company name
- * @returns {Object} Executive summary
- */
+// Produces executive summary sorted by impact + urgency for quick prioritization
 export function generateExecutiveSummary(classifiedResults, companyName) {
   const { items, stats } = classifiedResults;
 
-  // Get top issues (highest impact + urgency scores)
   const constructiveItems = items.filter(i => i.type === 'Constructive' && i.problemMetadata);
   const topIssues = constructiveItems
     .sort((a, b) => {
@@ -341,13 +249,11 @@ export function generateExecutiveSummary(classifiedResults, companyName) {
     })
     .slice(0, 5);
 
-  // Get best testimonials
   const praiseItems = items.filter(i => i.type === 'Praise' && i.delightMetadata);
   const topTestimonials = praiseItems
     .sort((a, b) => b.delightMetadata.shareability - a.delightMetadata.shareability)
     .slice(0, 3);
 
-  // Group by feature area
   const byFeatureArea = {};
   constructiveItems.forEach(item => {
     const area = item.problemMetadata.featureArea;
@@ -359,7 +265,6 @@ export function generateExecutiveSummary(classifiedResults, companyName) {
     byFeatureArea[area].items.push(item);
   });
 
-  // Calculate averages for feature areas
   Object.keys(byFeatureArea).forEach(area => {
     byFeatureArea[area].avgImpact = Math.round(
       (byFeatureArea[area].avgImpact / byFeatureArea[area].count) * 10
@@ -410,22 +315,12 @@ export function generateExecutiveSummary(classifiedResults, companyName) {
   };
 }
 
-// ============================================================================
-// CLI EXECUTION
-// ============================================================================
-
 async function main() {
-  console.log('='.repeat(60));
-  console.log('Threader AI - Senior Product Strategist Classifier');
-  console.log('='.repeat(60));
-
   if (!process.env.OPENAI_API_KEY) {
-    console.error('\nError: OPENAI_API_KEY not set');
-    console.error('Please add your OpenAI API key to .env');
+    console.error('OPENAI_API_KEY not set');
     process.exit(1);
   }
 
-  // Test with sample feedback items
   const testItems = [
     {
       sourceId: 'test-1',
@@ -462,56 +357,31 @@ async function main() {
     },
   ];
 
-  console.log(`\nAnalyzing ${testItems.length} test feedback items...\n`);
-
   const results = await classifyFeedbackBatch(testItems);
 
-  // Display detailed results
-  console.log('\n' + '='.repeat(60));
-  console.log('DETAILED ANALYSIS');
-  console.log('='.repeat(60));
-
   results.items.forEach((result, index) => {
-    console.log(`\n[${ index + 1}] ${testItems[index].title}`);
-    console.log('-'.repeat(50));
-    console.log(`Type: ${result.type} | Category: ${result.category}`);
-    console.log(`Confidence: ${(result.confidence * 100).toFixed(0)}%`);
+    console.log(`\n[${index + 1}] ${testItems[index].title}`);
+    console.log(`Type: ${result.type} | Category: ${result.category} | Confidence: ${(result.confidence * 100).toFixed(0)}%`);
 
     if (result.problemMetadata) {
-      console.log(`\nProblem Analysis:`);
-      console.log(`  Root Cause: ${result.problemMetadata.rootCause}`);
-      console.log(`  Feature Area: ${result.problemMetadata.featureArea}`);
-      console.log(`  Impact Type: ${result.problemMetadata.impactType}`);
-      console.log(`  Urgency: ${result.problemMetadata.urgencySignal}`);
-      console.log(`  Scores: Impact=${result.problemMetadata.prioritization.impactScore}/10, ` +
-                  `Urgency=${result.problemMetadata.prioritization.urgencyScore}/10, ` +
-                  `Effort=${result.problemMetadata.prioritization.effortEstimate}/5`);
+      const p = result.problemMetadata;
+      console.log(`Root Cause: ${p.rootCause} | Area: ${p.featureArea} | Impact: ${p.impactType}`);
+      console.log(`Scores: Impact=${p.prioritization.impactScore}/10, Urgency=${p.prioritization.urgencyScore}/10, Effort=${p.prioritization.effortEstimate}/5`);
     }
 
     if (result.delightMetadata) {
-      console.log(`\nDelight Analysis:`);
-      console.log(`  Aha! Moment: ${result.delightMetadata.ahaMoment}`);
-      console.log(`  Value Prop: ${result.delightMetadata.valuePropValidation}`);
-      console.log(`  Shareability: ${result.delightMetadata.shareability}/10`);
+      const d = result.delightMetadata;
+      console.log(`Aha Moment: ${d.ahaMoment} | Shareability: ${d.shareability}/10`);
     }
 
-    console.log(`\nStrategic Output:`);
-    console.log(`  Insight: ${result.summary.actionableInsight}`);
-    console.log(`  Reply: ${result.summary.replyDraft}`);
-    console.log(`  Key Quote: "${result.summary.keyQuote}"`);
+    console.log(`Insight: ${result.summary.actionableInsight}`);
+    console.log(`Key Quote: "${result.summary.keyQuote}"`);
   });
-
-  // Generate executive summary
-  console.log('\n' + '='.repeat(60));
-  console.log('EXECUTIVE SUMMARY');
-  console.log('='.repeat(60));
 
   const summary = generateExecutiveSummary(results, 'Notion');
   console.log(JSON.stringify(summary, null, 2));
 }
 
-// Run if executed directly
-const isMain = import.meta.url === `file://${process.argv[1]}`;
-if (isMain) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   main().catch(console.error);
 }

@@ -1,8 +1,3 @@
-/**
- * Threader AI - Supabase Client Configuration
- * Provides authenticated client instances for database operations
- */
-
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 
@@ -16,37 +11,42 @@ if (!supabaseUrl) {
   console.warn('[Supabase] SUPABASE_URL not configured');
 }
 
-/**
- * Public client for user-authenticated operations
- * Uses anon key and respects RLS policies
- */
+// Public client - respects RLS policies
 export const supabase = supabaseUrl && supabaseAnonKey
   ? createClient(supabaseUrl, supabaseAnonKey)
   : null;
 
-/**
- * Service role client for backend operations
- * Bypasses RLS - use only for trusted backend jobs
- */
+// Admin client - bypasses RLS, backend use only
 export const supabaseAdmin = supabaseUrl && supabaseServiceKey
   ? createClient(supabaseUrl, supabaseServiceKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
+      auth: { autoRefreshToken: false, persistSession: false },
     })
   : null;
 
-/**
- * Insert feedback items into the database
- * @param {string} tenantId - The tenant ID
- * @param {string} companyId - The company being monitored
- * @param {Array} feedbackItems - Normalized feedback items from scrapers
- */
+// Resolves a tenant name (e.g. "system_admin") to its UUID, creating the row if needed
+export async function getOrCreateTenant(name) {
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
+
+  const { data: existing } = await supabaseAdmin
+    .from('tenants')
+    .select('id')
+    .eq('name', name)
+    .single();
+
+  if (existing) return existing.id;
+
+  const { data, error } = await supabaseAdmin
+    .from('tenants')
+    .insert({ name })
+    .select('id')
+    .single();
+
+  if (error) throw error;
+  return data.id;
+}
+
 export async function insertFeedbackItems(tenantId, companyId, feedbackItems) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
   const records = feedbackItems.map(item => ({
     tenant_id: tenantId,
@@ -76,10 +76,7 @@ export async function insertFeedbackItems(tenantId, companyId, feedbackItems) {
 
   const { data, error } = await supabaseAdmin
     .from('feedback_items')
-    .upsert(records, {
-      onConflict: 'tenant_id,source,source_id',
-      ignoreDuplicates: false,
-    })
+    .upsert(records, { onConflict: 'tenant_id,source,source_id', ignoreDuplicates: false })
     .select();
 
   if (error) {
@@ -91,17 +88,9 @@ export async function insertFeedbackItems(tenantId, companyId, feedbackItems) {
   return data;
 }
 
-/**
- * Get or create a monitored company
- * @param {string} tenantId - The tenant ID
- * @param {string} companyName - The company name
- */
 export async function getOrCreateCompany(tenantId, companyName) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
-  // Try to find existing
   const { data: existing } = await supabaseAdmin
     .from('monitored_companies')
     .select('*')
@@ -109,37 +98,20 @@ export async function getOrCreateCompany(tenantId, companyName) {
     .eq('name', companyName)
     .single();
 
-  if (existing) {
-    return existing;
-  }
+  if (existing) return existing;
 
-  // Create new
   const { data, error } = await supabaseAdmin
     .from('monitored_companies')
-    .insert({
-      tenant_id: tenantId,
-      name: companyName,
-    })
+    .insert({ tenant_id: tenantId, name: companyName })
     .select()
     .single();
 
-  if (error) {
-    throw error;
-  }
-
+  if (error) throw error;
   return data;
 }
 
-/**
- * Create a scrape job record
- * @param {string} tenantId - The tenant ID
- * @param {string} companyId - The company ID
- * @param {string} source - The source (reddit, twitter, etc.)
- */
 export async function createScrapeJob(tenantId, companyId, source) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
   const { data, error } = await supabaseAdmin
     .from('scrape_jobs')
@@ -153,39 +125,19 @@ export async function createScrapeJob(tenantId, companyId, source) {
     .select()
     .single();
 
-  if (error) {
-    throw error;
-  }
-
+  if (error) throw error;
   return data;
 }
 
-/**
- * Update scrape job status
- */
 export async function updateScrapeJob(jobId, updates) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
-  const { error } = await supabaseAdmin
-    .from('scrape_jobs')
-    .update(updates)
-    .eq('id', jobId);
-
-  if (error) {
-    throw error;
-  }
+  const { error } = await supabaseAdmin.from('scrape_jobs').update(updates).eq('id', jobId);
+  if (error) throw error;
 }
 
-/**
- * Get unprocessed feedback items for classification
- * @param {number} limit - Maximum items to fetch
- */
 export async function getUnprocessedFeedback(limit = 50) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
   const { data, error } = await supabaseAdmin
     .from('feedback_items')
@@ -194,20 +146,12 @@ export async function getUnprocessedFeedback(limit = 50) {
     .order('scraped_at', { ascending: false })
     .limit(limit);
 
-  if (error) {
-    throw error;
-  }
-
+  if (error) throw error;
   return data;
 }
 
-/**
- * Update feedback item with classification results
- */
 export async function updateFeedbackClassification(itemId, classification) {
-  if (!supabaseAdmin) {
-    throw new Error('Supabase admin client not configured');
-  }
+  if (!supabaseAdmin) throw new Error('Supabase admin client not configured');
 
   const { error } = await supabaseAdmin
     .from('feedback_items')
@@ -225,7 +169,5 @@ export async function updateFeedbackClassification(itemId, classification) {
     })
     .eq('id', itemId);
 
-  if (error) {
-    throw error;
-  }
+  if (error) throw error;
 }

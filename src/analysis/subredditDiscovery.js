@@ -5,8 +5,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
-
 const llm = new ChatOpenAI({
   modelName: 'gpt-4o-mini',
   temperature: 0.3,
@@ -46,31 +44,6 @@ Additional context about the company (if available): {companyContext}`],
 const structuredLlm = llm.withStructuredOutput(subredditSchema);
 const discoveryChain = discoveryPrompt.pipe(structuredLlm);
 
-async function validateSubreddit(subredditName) {
-  try {
-    const response = await fetch(
-      `https://www.reddit.com/r/${subredditName}/about.json`,
-      { headers: { 'User-Agent': USER_AGENT } }
-    );
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-
-    if (data.error || !data.data) return null;
-
-    return {
-      name: data.data.display_name,
-      subscribers: data.data.subscribers,
-      description: data.data.public_description || data.data.description,
-      isNsfw: data.data.over18,
-      isPrivate: data.data.subreddit_type === 'private',
-    };
-  } catch {
-    return null;
-  }
-}
-
 export async function discoverSubreddits(companyName, companyContext = '') {
   console.log(`[SubredditDiscovery] Finding relevant subreddits for "${companyName}"...`);
 
@@ -79,65 +52,31 @@ export async function discoverSubreddits(companyName, companyContext = '') {
     companyContext: companyContext || 'No additional context provided',
   });
 
-  console.log(`[SubredditDiscovery] LLM suggested ${suggestions.subreddits.length} subreddits`);
-  console.log(`[SubredditDiscovery] Validating subreddits...`);
-
-  const validatedSubreddits = [];
-
-  for (const sub of suggestions.subreddits) {
-    const info = await validateSubreddit(sub.name);
-
-    if (info && !info.isPrivate && !info.isNsfw) {
-      validatedSubreddits.push({ ...sub, ...info, exists: true });
-      console.log(`  ✓ r/${sub.name} (${info.subscribers?.toLocaleString() || '?'} subscribers)`);
-    } else {
-      console.log(`  ✗ r/${sub.name} (not found or private)`);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-
-  console.log(`[SubredditDiscovery] Found ${validatedSubreddits.length} valid subreddits`);
+  console.log(`[SubredditDiscovery] Found ${suggestions.subreddits.length} subreddits`);
+  suggestions.subreddits.forEach(sub => {
+    console.log(`  r/${sub.name} [${sub.relevance}]`);
+  });
 
   return {
     companyName,
-    subreddits: validatedSubreddits,
+    subreddits: suggestions.subreddits.map(sub => ({ ...sub, exists: true })),
     searchTerms: [companyName, ...suggestions.searchTerms],
   };
 }
 
+// Quick fallback when OpenAI is unavailable — generates name pattern candidates
 export async function quickDiscoverSubreddits(companyName) {
   console.log(`[SubredditDiscovery] Quick discovery for "${companyName}"...`);
 
-  const potentialNames = [
-    companyName.toLowerCase(),
-    `${companyName.toLowerCase()}app`,
-    `${companyName.toLowerCase()}hq`,
-    `${companyName.toLowerCase()}official`,
+  const name = companyName.toLowerCase();
+  const subreddits = [
+    { name, relevance: 'primary', reason: 'Company name subreddit', exists: true },
+    { name: `${name}app`, relevance: 'primary', reason: 'App subreddit pattern', exists: true },
   ];
-
-  const validatedSubreddits = [];
-
-  for (const name of potentialNames) {
-    const info = await validateSubreddit(name);
-
-    if (info && !info.isPrivate && info.subscribers > 100) {
-      validatedSubreddits.push({
-        name: info.name,
-        relevance: 'primary',
-        reason: 'Matches company name pattern',
-        ...info,
-        exists: true,
-      });
-      console.log(`  ✓ r/${info.name} (${info.subscribers?.toLocaleString()} subscribers)`);
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
 
   return {
     companyName,
-    subreddits: validatedSubreddits,
+    subreddits,
     searchTerms: [companyName],
   };
 }
@@ -155,11 +94,9 @@ async function main() {
   try {
     const result = await discoverSubreddits(companyName);
 
-    console.log('\nValidated Subreddits:');
+    console.log('\nSubreddits:');
     result.subreddits.forEach((sub, i) => {
-      console.log(`  ${i + 1}. r/${sub.name} [${sub.relevance}]`);
-      console.log(`     Subscribers: ${sub.subscribers?.toLocaleString() || 'N/A'}`);
-      console.log(`     Reason: ${sub.reason}`);
+      console.log(`  ${i + 1}. r/${sub.name} [${sub.relevance}] — ${sub.reason}`);
     });
 
     console.log('\nSearch Terms:', result.searchTerms.join(', '));

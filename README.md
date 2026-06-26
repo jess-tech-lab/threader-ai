@@ -171,7 +171,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ...
 ### Run the Scout
 
 ```bash
-# Analyze a company's feedback
+# Analyze a company's feedback e.g. Notion
 npm run scout "Notion"
 ```
 
@@ -182,7 +182,7 @@ cd frontend
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) to view the dashboard.
+Open [http://localhost:5173](http://localhost:5173) to view the dashboard and [http://localhost:5173?company={company}](http://localhost:5173?company={company}) to view report of a company.
 
 ---
 

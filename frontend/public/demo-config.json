@@ -2,36 +2,36 @@
   "companyName": "Notion",
   "synthesis": {
     "summaries": {
-      "tldr": "Notion faces significant usability friction, with users expressing frustration over app stability, customization, and feature integration.",
+      "tldr": "Notion faces significant usability friction, particularly in navigation and integration, with a need for enhanced feature requests like email integration.",
       "highlights": [
-        "Usability friction is the primary concern, with multiple areas like app stability and text formatting causing issues.",
-        "Customization requests are prevalent, with users wanting more control over the interface aesthetics.",
-        "Notion Mail and task management features are notably problematic, leading to user dissatisfaction.",
-        "Users are experiencing significant frustration with the app's performance and stability.",
-        "Despite issues, users still express a desire for enhanced features and integrations."
+        "Usability friction is the primary concern, with issues in navigation and integration.",
+        "Feature requests focus on templates and email integration.",
+        "Feedback indicates a loss of simplicity in the user interface.",
+        "Login and authentication processes are problematic for some users.",
+        "Web clipper functionality is unreliable, causing user frustration."
       ],
-      "executiveBrief": "The analysis of 50 user feedback entries reveals that Notion is currently facing considerable usability friction, particularly in areas such as app stability, customization options, and feature integration. Users have reported frequent crashes, difficulties with the text formatting menu, and dissatisfaction with Notion Mail's functionality. Customization requests are also prominent, with users seeking more control over the interface's appearance. Despite these challenges, there is a clear demand for enhanced features and integrations, indicating a strong user interest in the platform's potential. Addressing these usability issues and expanding customization options could significantly improve user satisfaction and retention."
+      "executiveBrief": "The analysis of 50 feedback entries reveals that Notion is currently experiencing notable usability friction, particularly in areas such as navigation, integration with external apps, and login/authentication processes. Users express a desire for enhanced features, notably in templates and email integration. The sentiment indicates a concern that Notion is losing its simplicity, which was a key strength. Despite these challenges, users appreciate Notion's organizational capabilities once set up. However, the initial setup and integration processes are seen as cumbersome, particularly on mobile devices. Addressing these issues could significantly enhance user satisfaction and retention."
     },
     "sentiment": {
-      "positive": 4,
-      "neutral": 20,
-      "negative": 26,
+      "positive": 1,
+      "neutral": 15,
+      "negative": 34,
       "mood": "Concerning",
-      "moodExplanation": "The sentiment analysis indicates a concerning mood, with a majority of feedback being negative or highlighting usability issues, suggesting significant user dissatisfaction."
+      "moodExplanation": "The mood is concerning due to the high volume of negative feedback focused on usability friction and integration issues, overshadowing the minimal positive sentiment."
     },
     "focusAreas": [
       {
         "id": "1",
-        "title": "AI Assistance",
+        "title": "Calendar View",
         "category": "usability_friction",
         "items": [
           {
             "type": "Constructive",
             "category": "Support Question",
             "problemMetadata": {
-              "rootCause": "Certainty",
-              "featureArea": "AI Assistance",
-              "impactType": "Retention",
+              "rootCause": "Ease",
+              "featureArea": "Calendar View",
+              "impactType": "Cost to Serve",
               "urgencySignal": "High",
               "prioritization": {
                 "impactScore": 7,
@@ -41,15 +41,15 @@
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Investigate clarifying the limitations of AI assistance for free users to enhance user understanding and retention.",
-              "replyDraft": "Hi there! Thanks for your question about AI help in Notion. While the AI can assist you in many ways, there are some limitations based on your plan. We recommend checking our documentation for detailed information on what you can do with the free version. Happy Notioning!",
-              "keyQuote": "Is the AI help unlimited?"
+              "actionableInsight": "Prioritize improving the calendar view functionality to enhance usability and support.",
+              "replyDraft": "Hi Sameera! I understand how frustrating it can be when things don't work as expected. It sounds like you're trying to create a calendar view that accurately reflects your data. Have you checked the date formatting and visibility settings? If you need more help, feel free to reach out to our support team!",
+              "keyQuote": "Is there a easy way to seperate each date even if they are on the same row, under the same name?"
             },
-            "confidence": 0.85,
-            "reasoning": "The feedback expresses a clear question about the limitations of AI assistance, indicating a need for clarity and support. This falls under 'Support Question' as the user seeks information to better utilize the product.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uban65/ai_help_in_the_pages_databases_etc/",
-            "sourceId": "1uban65",
-            "originalTitle": "AI help in the pages, databases, etc.",
+            "confidence": 0.95,
+            "reasoning": "The feedback clearly indicates a struggle with using the calendar feature, which falls under a support question. The user is seeking help with functionality that should be straightforward, indicating a usability friction. The urgency and impact scores suggest that this is a significant issue that could affect user satisfaction.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ugdjsz/calendar_help/",
+            "sourceId": "1ugdjsz",
+            "originalTitle": "Calendar help!",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -78,12 +78,12 @@
         ],
         "totalScore": 2.1,
         "quotes": [
-          "Is the AI help unlimited?"
+          "Is there a easy way to seperate each date even if they are on the same row, under the same name?"
         ],
         "segments": {},
         "frequency": 1,
         "avgImpact": 2.1,
-        "topQuote": "Is the AI help unlimited?",
+        "topQuote": "Is there a easy way to seperate each date even if they are on the same row, under the same name?",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
@@ -91,41 +91,41 @@
         },
         "scoreRationale": "Score based on standard engagement metrics.",
         "severityLabel": "Medium",
-        "rootCause": "Unclear AI capabilities and limitations.",
+        "rootCause": "Lack of intuitive date management features.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       },
       {
         "id": "2",
-        "title": "Customization Options",
-        "category": "feature_request",
+        "title": "Linking with External Apps",
+        "category": "usability_friction",
         "items": [
           {
             "type": "Constructive",
-            "category": "Feature Request",
+            "category": "Usability Friction",
             "problemMetadata": {
-              "rootCause": "Control",
-              "featureArea": "Customization Options",
+              "rootCause": "Integration",
+              "featureArea": "Linking with External Apps",
               "impactType": "Retention",
-              "urgencySignal": "Low",
+              "urgencySignal": "High",
               "prioritization": {
-                "impactScore": 6,
-                "urgencyScore": 4,
-                "effortEstimate": 2
+                "impactScore": 8,
+                "urgencyScore": 7,
+                "effortEstimate": 3
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Prioritize expanding customization options for user interfaces and automation features.",
-              "replyDraft": "Thanks for sharing your ideas! It sounds like a fun project to create a rewards system in Notion. While we currently have some customization options, we’re always looking to improve. Your feedback on adding more features is valuable, and we’ll keep it in mind for future updates!",
-              "keyQuote": "I want to customize the color and other features. I want it all pinkkkkkkk!"
+              "actionableInsight": "Prioritize developing integration features that allow users to link Notion with other applications seamlessly.",
+              "replyDraft": "Hi there! It sounds like you're juggling a lot of tools alongside Notion, and I can see how that could be frustrating. Many users have expressed a desire for better integration with external apps, and your feedback is invaluable. Have you tried using any third-party tools or extensions to help manage your workflow?",
+              "keyQuote": "notion only connects stuff inside notion. it cant reach the other apps i use next to it."
             },
             "confidence": 0.85,
-            "reasoning": "The feedback clearly expresses a desire for new features related to customization and automation, indicating a need for more control over the user experience. The request for specific color customization and automation suggests a feature request rather than usability friction or support question.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ub9dtf/i_need_ideas_for_habit_rewards_and_what_i_can/",
-            "sourceId": "1ub9dtf",
-            "originalTitle": "I need ideas for habit rewards and what I can customize?",
+            "reasoning": "The feedback clearly expresses a struggle with integrating Notion with other applications, indicating a usability friction. The user is looking for ways to manage their workflow better, which points to a need for improved integration features.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ugc4b1/notion_links_my_pages_but_not_my_other_apps_how/",
+            "sourceId": "1ugc4b1",
+            "originalTitle": "notion links my pages but not my other apps. how do you deal with this?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -154,12 +154,12 @@
         ],
         "totalScore": 2.1,
         "quotes": [
-          "I want to customize the color and other features. I want it all pinkkkkkkk!"
+          "notion only connects stuff inside notion. it cant reach the other apps i use next to it."
         ],
         "segments": {},
         "frequency": 1,
         "avgImpact": 2.1,
-        "topQuote": "I want to customize the color and other features. I want it all pinkkkkkkk!",
+        "topQuote": "notion only connects stuff inside notion. it cant reach the other apps i use next to it.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
@@ -167,345 +167,41 @@
         },
         "scoreRationale": "Score based on standard engagement metrics.",
         "severityLabel": "Medium",
-        "rootCause": "Lack of interface customization options.",
+        "rootCause": "Limited integration capabilities with third-party applications.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       },
       {
         "id": "3",
-        "title": "App Stability",
+        "title": "User Interface",
         "category": "usability_friction",
         "items": [
           {
             "type": "Constructive",
             "category": "Usability Friction",
             "problemMetadata": {
-              "rootCause": "Reliability",
-              "featureArea": "App Stability",
+              "rootCause": "Ease",
+              "featureArea": "User Interface",
               "impactType": "Retention",
-              "urgencySignal": "Critical",
+              "urgencySignal": "High",
               "prioritization": {
-                "impactScore": 9,
-                "urgencyScore": 10,
+                "impactScore": 8,
+                "urgencyScore": 7,
                 "effortEstimate": 3
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Prioritize fixing the app stability issues related to the 'render process gone' error, especially after Windows updates.",
-              "replyDraft": "Hi there! I'm really sorry to hear about the crashing issues you're experiencing with Notion. It sounds frustrating, especially after trying so many troubleshooting steps. We're actively working on improving app stability, and your feedback is invaluable. Thank you for your patience!",
-              "keyQuote": "Notion keeps crashing giving 'render process gone' error."
+              "actionableInsight": "Prioritize simplifying the user interface to enhance usability for users who prefer a more straightforward experience.",
+              "replyDraft": "Thank you for sharing your thoughts! We understand that the balance between simplicity and functionality is crucial. We're always looking for ways to improve the user experience, and your feedback helps us focus on what matters most to our users. Please stay tuned for updates!",
+              "keyQuote": "I feel like Notion is losing the simplicity that made it great in the first place."
             },
             "confidence": 0.95,
-            "reasoning": "The feedback clearly indicates a usability issue with the app crashing, which is a significant problem affecting user experience and retention. The user's detailed troubleshooting steps suggest a serious reliability concern, especially after a Windows update.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ub54vv/notion_keeps_crashing_giving_render_process_gone/",
-            "sourceId": "1ub54vv",
-            "originalTitle": "Notion keeps crashing giving \"render process gone\" errror",
-            "signalScore": 0.5999999999999999,
-            "impactData": {
-              "score": 2.1,
-              "maxScore": 10,
-              "breakdown": {
-                "reach": {
-                  "value": 0,
-                  "weight": 0.4
-                },
-                "sentiment": {
-                  "value": 7,
-                  "weight": 0.3
-                },
-                "velocity": {
-                  "value": 0,
-                  "weight": 0.3
-                }
-              },
-              "rationale": "Score based on standard engagement metrics.",
-              "stakes": {
-                "type": "risk",
-                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-              }
-            }
-          }
-        ],
-        "totalScore": 2.1,
-        "quotes": [
-          "Notion keeps crashing giving 'render process gone' error."
-        ],
-        "segments": {},
-        "frequency": 1,
-        "avgImpact": 2.1,
-        "topQuote": "Notion keeps crashing giving 'render process gone' error.",
-        "affectedSegments": [],
-        "stakes": {
-          "type": "risk",
-          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-        },
-        "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "High",
-        "rootCause": "Underlying software stability issues.",
-        "impactScore": 2.1,
-        "trend": "new",
-        "trendDelta": 0
-      },
-      {
-        "id": "4",
-        "title": "Calendar Management",
-        "category": "usability_friction",
-        "items": [
-          {
-            "type": "Constructive",
-            "category": "Usability Friction",
-            "problemMetadata": {
-              "rootCause": "Ease",
-              "featureArea": "Calendar Management",
-              "impactType": "Retention",
-              "urgencySignal": "Low",
-              "prioritization": {
-                "impactScore": 6,
-                "urgencyScore": 4,
-                "effortEstimate": 2
-              }
-            },
-            "delightMetadata": null,
-            "summary": {
-              "actionableInsight": "Prioritize improving the calendar event color management feature to enhance user experience.",
-              "replyDraft": "Hi there! Thanks for sharing your experience with the calendar event colors in Notion. I understand how frustrating it can be when things don't work as expected. While I can't provide a direct solution, I recommend checking our help center for tips or submitting a feature request for better color management. Your feedback is valuable!",
-              "keyQuote": "It'd be really nice if there's a way to change its color!"
-            },
-            "confidence": 0.85,
-            "reasoning": "The feedback clearly indicates a usability issue with the calendar event colors, where the user is experiencing frustration due to the lack of control over color settings. This aligns with the 'Usability Friction' category, and the root cause is identified as 'Ease' since the user seeks a simpler way to manage event colors.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ub2mg7/how_to_change_the_color_of_a_calendar_event_from/",
-            "sourceId": "1ub2mg7",
-            "originalTitle": "How to change the color of a calendar event from my notion's database?",
-            "signalScore": 0.5999999999999999,
-            "impactData": {
-              "score": 2.1,
-              "maxScore": 10,
-              "breakdown": {
-                "reach": {
-                  "value": 0,
-                  "weight": 0.4
-                },
-                "sentiment": {
-                  "value": 7,
-                  "weight": 0.3
-                },
-                "velocity": {
-                  "value": 0,
-                  "weight": 0.3
-                }
-              },
-              "rationale": "Score based on standard engagement metrics.",
-              "stakes": {
-                "type": "risk",
-                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-              }
-            }
-          }
-        ],
-        "totalScore": 2.1,
-        "quotes": [
-          "It'd be really nice if there's a way to change its color!"
-        ],
-        "segments": {},
-        "frequency": 1,
-        "avgImpact": 2.1,
-        "topQuote": "It'd be really nice if there's a way to change its color!",
-        "affectedSegments": [],
-        "stakes": {
-          "type": "risk",
-          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-        },
-        "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "Medium",
-        "rootCause": "Limited customization in calendar features.",
-        "impactScore": 2.1,
-        "trend": "new",
-        "trendDelta": 0
-      },
-      {
-        "id": "5",
-        "title": "Pinned Properties",
-        "category": "usability_friction",
-        "items": [
-          {
-            "type": "Constructive",
-            "category": "Usability Friction",
-            "problemMetadata": {
-              "rootCause": "Ease",
-              "featureArea": "Pinned Properties",
-              "impactType": "Retention",
-              "urgencySignal": "High",
-              "prioritization": {
-                "impactScore": 7,
-                "urgencyScore": 8,
-                "effortEstimate": 2
-              }
-            },
-            "delightMetadata": null,
-            "summary": {
-              "actionableInsight": "Prioritize improving the visual flexibility of pinned properties to enhance user experience.",
-              "replyDraft": "Hi there! Thanks for sharing your thoughts. We understand how important the appearance of your workspace is, and we're sorry to hear that the recent changes have affected the look of your pinned properties. Your feedback is valuable, and we'll take it into consideration as we work on future updates!",
-              "keyQuote": "...now everything seems to have a min width and I think it looks pretty dreadful."
-            },
-            "confidence": 0.85,
-            "reasoning": "The feedback clearly expresses dissatisfaction with a recent change in the UI regarding pinned properties, indicating usability friction. The user struggles with the new default width, which affects the overall aesthetic and usability of their workspace.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uavfz6/anyone_else_seeing_this_pinned_properties_now/",
-            "sourceId": "1uavfz6",
-            "originalTitle": "Anyone else seeing this? Pinned properties now have default width and it looks awful",
-            "signalScore": 0.5999999999999999,
-            "impactData": {
-              "score": 2.1,
-              "maxScore": 10,
-              "breakdown": {
-                "reach": {
-                  "value": 0,
-                  "weight": 0.4
-                },
-                "sentiment": {
-                  "value": 7,
-                  "weight": 0.3
-                },
-                "velocity": {
-                  "value": 0,
-                  "weight": 0.3
-                }
-              },
-              "rationale": "Score based on standard engagement metrics.",
-              "stakes": {
-                "type": "risk",
-                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-              }
-            }
-          }
-        ],
-        "totalScore": 2.1,
-        "quotes": [
-          "...now everything seems to have a min width and I think it looks pretty dreadful."
-        ],
-        "segments": {},
-        "frequency": 1,
-        "avgImpact": 2.1,
-        "topQuote": "...now everything seems to have a min width and I think it looks pretty dreadful.",
-        "affectedSegments": [],
-        "stakes": {
-          "type": "risk",
-          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-        },
-        "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "Medium",
-        "rootCause": "Inflexible design constraints.",
-        "impactScore": 2.1,
-        "trend": "new",
-        "trendDelta": 0
-      },
-      {
-        "id": "6",
-        "title": "Text Formatting Menu",
-        "category": "usability_friction",
-        "items": [
-          {
-            "type": "Constructive",
-            "category": "Usability Friction",
-            "problemMetadata": {
-              "rootCause": "Ease",
-              "featureArea": "Text Formatting Menu",
-              "impactType": "Retention",
-              "urgencySignal": "High",
-              "prioritization": {
-                "impactScore": 7,
-                "urgencyScore": 8,
-                "effortEstimate": 2
-              }
-            },
-            "delightMetadata": null,
-            "summary": {
-              "actionableInsight": "Prioritize fixing the text formatting menu glitch to enhance user experience and retention.",
-              "replyDraft": "Hi Jammyyy_jam, thanks for bringing this to our attention! We're sorry to hear about the glitch with the text formatting menu. Our team is looking into it, and we appreciate your patience as we work to improve the experience!",
-              "keyQuote": "the menu when you selected some text showed up isnt showing up!"
-            },
-            "confidence": 0.85,
-            "reasoning": "The feedback clearly indicates a usability issue with the text formatting menu, which affects user experience. The user expresses frustration with the alternative method, indicating a need for ease of use. The impact and urgency scores reflect the importance of addressing this issue promptly.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uasym4/glitch_where_the_menu_when_you_selected_some_text/",
-            "sourceId": "1uasym4",
-            "originalTitle": "Glitch where the menu when you selected some text showed up isnt showing up! If i used ctrl + /, a similar menu comes up but its very bad to use!",
-            "signalScore": 0.5999999999999999,
-            "impactData": {
-              "score": 2.1,
-              "maxScore": 10,
-              "breakdown": {
-                "reach": {
-                  "value": 0,
-                  "weight": 0.4
-                },
-                "sentiment": {
-                  "value": 7,
-                  "weight": 0.3
-                },
-                "velocity": {
-                  "value": 0,
-                  "weight": 0.3
-                }
-              },
-              "rationale": "Score based on standard engagement metrics.",
-              "stakes": {
-                "type": "risk",
-                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-              }
-            }
-          }
-        ],
-        "totalScore": 2.1,
-        "quotes": [
-          "the menu when you selected some text showed up isnt showing up!"
-        ],
-        "segments": {},
-        "frequency": 1,
-        "avgImpact": 2.1,
-        "topQuote": "the menu when you selected some text showed up isnt showing up!",
-        "affectedSegments": [],
-        "stakes": {
-          "type": "risk",
-          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
-        },
-        "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "High",
-        "rootCause": "Bugs in text formatting interface.",
-        "impactScore": 2.1,
-        "trend": "new",
-        "trendDelta": 0
-      },
-      {
-        "id": "7",
-        "title": "Notion Mail",
-        "category": "usability_friction",
-        "items": [
-          {
-            "type": "Constructive",
-            "category": "Usability Friction",
-            "problemMetadata": {
-              "rootCause": "Speed",
-              "featureArea": "Notion Mail",
-              "impactType": "Retention",
-              "urgencySignal": "Critical",
-              "prioritization": {
-                "impactScore": 9,
-                "urgencyScore": 10,
-                "effortEstimate": 3
-              }
-            },
-            "delightMetadata": null,
-            "summary": {
-              "actionableInsight": "Prioritize performance optimization for Notion Mail to enhance user experience and retention.",
-              "replyDraft": "Hey there! Thanks for sharing your thoughts on Notion Mail. We understand how frustrating slow loading times can be, and we appreciate your feedback. We're always looking to improve, and your insights will help us make Notion Mail better!",
-              "keyQuote": "Notion Mail isn't an email client. It's a loading screen with commitment issues."
-            },
-            "confidence": 0.95,
-            "reasoning": "The feedback clearly expresses frustration with the speed of Notion Mail, categorizing it as usability friction. The user highlights a specific area (Notion Mail) and indicates a strong emotional response, suggesting a critical need for improvement in speed to retain users.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uaox4b/notion_mail_is_so_slow_it_makes_me_question_my/",
-            "sourceId": "1uaox4b",
-            "originalTitle": "Notion Mail is so slow it makes me question my life choices",
+            "reasoning": "The feedback expresses a clear concern about the increasing complexity of Notion, indicating usability friction. The user feels overwhelmed by the new features and desires a simpler experience, which aligns with the 'Ease' root cause. The impact on retention is significant as users may leave if they feel the product is no longer meeting their needs.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ug9tgm/is_notion_becoming_unnecessarily_complicated/",
+            "sourceId": "1ug9tgm",
+            "originalTitle": "Is Notion becoming unnecessarily complicated?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -535,27 +231,27 @@
             "type": "Constructive",
             "category": "Usability Friction",
             "problemMetadata": {
-              "rootCause": "Speed",
-              "featureArea": "Notion Mail",
+              "rootCause": "Ease",
+              "featureArea": "User Interface",
               "impactType": "Retention",
               "urgencySignal": "High",
               "prioritization": {
                 "impactScore": 7,
                 "urgencyScore": 8,
-                "effortEstimate": 3
+                "effortEstimate": 2
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Prioritize performance improvements and updates for Notion Mail to enhance user experience and retention.",
-              "replyDraft": "Thank you for sharing your experience with Notion Mail! We appreciate your feedback and understand the importance of speed and updates. We're committed to improving the product and will take your insights into consideration as we plan future enhancements.",
-              "keyQuote": "\"the product is very very slow and... it’s been in beta for a long time and seemingly has not been updated for many months.\""
+              "actionableInsight": "Prioritize improving cursor visibility in Notion's user interface to enhance usability.",
+              "replyDraft": "Thank you for sharing your experience! We understand how frustrating it can be when the cursor blends into the background. Your suggestion about changing the cursor color is valuable, and we'll look into ways to improve visibility for all users.",
+              "keyQuote": "\"I found it difficult to track my mouse cursor because it has turned white in a page with white background.\""
             },
             "confidence": 0.85,
-            "reasoning": "The feedback indicates a clear usability issue with Notion Mail, specifically regarding its speed and lack of updates, which aligns with the 'Usability Friction' category. The user expresses a desire for improvements, indicating a potential risk to retention if these issues are not addressed.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1u9hz5z/notion_mail/",
-            "sourceId": "1u9hz5z",
-            "originalTitle": "Notion Mail?",
+            "reasoning": "The feedback clearly identifies a usability issue with the cursor visibility against a white background, which falls under usability friction. The suggested solution indicates a need for improved ease of use, and the urgency is high due to its impact on user experience.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ug6e3a/fix_cursor_disappears_or_turns_into_a_white_ibeam/",
+            "sourceId": "1ug6e3a",
+            "originalTitle": "Fix: Cursor disappears or turns into a white I-beam in Notion",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -584,28 +280,256 @@
         ],
         "totalScore": 4.2,
         "quotes": [
-          "Notion Mail isn't an email client. It's a loading screen with commitment issues.",
-          "\"the product is very very slow and... it’s been in beta for a long time and seemingly has not been updated for many months.\""
+          "I feel like Notion is losing the simplicity that made it great in the first place.",
+          "\"I found it difficult to track my mouse cursor because it has turned white in a page with white background.\""
         ],
         "segments": {},
         "frequency": 2,
         "avgImpact": 2.1,
-        "topQuote": "Notion Mail isn't an email client. It's a loading screen with commitment issues.",
+        "topQuote": "I feel like Notion is losing the simplicity that made it great in the first place.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
           "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
         },
         "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "High",
-        "rootCause": "Performance and reliability issues with Notion Mail.",
+        "severityLabel": "Medium",
+        "rootCause": "Complexity in design and navigation.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       },
       {
-        "id": "8",
-        "title": "Task Management",
+        "id": "4",
+        "title": "Sidebar Navigation",
+        "category": "usability_friction",
+        "items": [
+          {
+            "type": "Constructive",
+            "category": "Usability Friction",
+            "problemMetadata": {
+              "rootCause": "Ease",
+              "featureArea": "Sidebar Navigation",
+              "impactType": "Retention",
+              "urgencySignal": "High",
+              "prioritization": {
+                "impactScore": 7,
+                "urgencyScore": 8,
+                "effortEstimate": 2
+              }
+            },
+            "delightMetadata": null,
+            "summary": {
+              "actionableInsight": "Prioritize improving the sidebar navigation to enhance user experience and reduce friction.",
+              "replyDraft": "Thanks for sharing your thoughts! We understand how important ease of navigation is, and we appreciate your feedback on the sidebar. We'll take this into consideration as we continue to improve Notion.",
+              "keyQuote": "It was so much easier browsing in Notion when you could open your inbox aside the sidebar."
+            },
+            "confidence": 0.85,
+            "reasoning": "The feedback clearly expresses a struggle with the current sidebar navigation, indicating a usability friction. The user misses a feature that allowed for easier browsing, which points to a need for simplicity in the interface.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ug1i8o/anyone_else_misses_the_old_desktop_notion_sidebar/",
+            "sourceId": "1ug1i8o",
+            "originalTitle": "Anyone else misses the old desktop Notion sidebar where you don't need to toggle constantly between your sidebar menu and inbox?",
+            "signalScore": 0.5999999999999999,
+            "impactData": {
+              "score": 2.1,
+              "maxScore": 10,
+              "breakdown": {
+                "reach": {
+                  "value": 0,
+                  "weight": 0.4
+                },
+                "sentiment": {
+                  "value": 7,
+                  "weight": 0.3
+                },
+                "velocity": {
+                  "value": 0,
+                  "weight": 0.3
+                }
+              },
+              "rationale": "Score based on standard engagement metrics.",
+              "stakes": {
+                "type": "risk",
+                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+              }
+            }
+          }
+        ],
+        "totalScore": 2.1,
+        "quotes": [
+          "It was so much easier browsing in Notion when you could open your inbox aside the sidebar."
+        ],
+        "segments": {},
+        "frequency": 1,
+        "avgImpact": 2.1,
+        "topQuote": "It was so much easier browsing in Notion when you could open your inbox aside the sidebar.",
+        "affectedSegments": [],
+        "stakes": {
+          "type": "risk",
+          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+        },
+        "scoreRationale": "Score based on standard engagement metrics.",
+        "severityLabel": "Medium",
+        "rootCause": "Inefficient navigation layout.",
+        "impactScore": 2.1,
+        "trend": "new",
+        "trendDelta": 0
+      },
+      {
+        "id": "5",
+        "title": "Login/Authentication",
+        "category": "usability_friction",
+        "items": [
+          {
+            "type": "Constructive",
+            "category": "Usability Friction",
+            "problemMetadata": {
+              "rootCause": "Ease",
+              "featureArea": "Login/Authentication",
+              "impactType": "Retention",
+              "urgencySignal": "High",
+              "prioritization": {
+                "impactScore": 7,
+                "urgencyScore": 8,
+                "effortEstimate": 3
+              }
+            },
+            "delightMetadata": null,
+            "summary": {
+              "actionableInsight": "Prioritize improving the login experience for the Notion Calendar desktop app to ensure compatibility with passkeys.",
+              "replyDraft": "Hi there! Thanks for sharing your experience with the Notion Calendar app. We understand how frustrating it can be when login issues arise, especially with passkeys. We're looking into this to improve the experience for all users. Stay tuned for updates!",
+              "keyQuote": "When I try to login to the Notion Calendar desktop app, it opens a browser via notion.so which can't detect any of my keys."
+            },
+            "confidence": 0.85,
+            "reasoning": "The feedback indicates a specific issue with the login process for the Notion Calendar app, which suggests usability friction. The user is experiencing difficulty due to the incompatibility of the passkey system with the browser redirect, indicating a need for improvement in the authentication process.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufx4d8/notion_calendar_asking_for_notionso_passkeys/",
+            "sourceId": "1ufx4d8",
+            "originalTitle": "Notion Calendar asking for notion.so passkeys",
+            "signalScore": 0.5999999999999999,
+            "impactData": {
+              "score": 2.1,
+              "maxScore": 10,
+              "breakdown": {
+                "reach": {
+                  "value": 0,
+                  "weight": 0.4
+                },
+                "sentiment": {
+                  "value": 7,
+                  "weight": 0.3
+                },
+                "velocity": {
+                  "value": 0,
+                  "weight": 0.3
+                }
+              },
+              "rationale": "Score based on standard engagement metrics.",
+              "stakes": {
+                "type": "risk",
+                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+              }
+            }
+          }
+        ],
+        "totalScore": 2.1,
+        "quotes": [
+          "When I try to login to the Notion Calendar desktop app, it opens a browser via notion.so which can't detect any of my keys."
+        ],
+        "segments": {},
+        "frequency": 1,
+        "avgImpact": 2.1,
+        "topQuote": "When I try to login to the Notion Calendar desktop app, it opens a browser via notion.so which can't detect any of my keys.",
+        "affectedSegments": [],
+        "stakes": {
+          "type": "risk",
+          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+        },
+        "scoreRationale": "Score based on standard engagement metrics.",
+        "severityLabel": "Medium",
+        "rootCause": "Complicated login process and browser dependency.",
+        "impactScore": 2.1,
+        "trend": "new",
+        "trendDelta": 0
+      },
+      {
+        "id": "6",
+        "title": "Templates",
+        "category": "feature_request",
+        "items": [
+          {
+            "type": "Constructive",
+            "category": "Feature Request",
+            "problemMetadata": {
+              "rootCause": "Ease",
+              "featureArea": "Templates",
+              "impactType": "Retention",
+              "urgencySignal": "Low",
+              "prioritization": {
+                "impactScore": 6,
+                "urgencyScore": 4,
+                "effortEstimate": 2
+              }
+            },
+            "delightMetadata": null,
+            "summary": {
+              "actionableInsight": "Prioritize the development of free budgeting templates to enhance user experience and retention.",
+              "replyDraft": "Hi there! Thanks for reaching out. We understand the need for convenient budgeting templates. While we currently don't have a specific free template available, we encourage you to check our community forums where users often share their own templates. Your feedback is valuable, and we’ll consider adding more templates in the future!",
+              "keyQuote": "Does any know where to find a free very usable and convenient budgeting template?"
+            },
+            "confidence": 0.85,
+            "reasoning": "The feedback clearly indicates a request for a budgeting template, which falls under the Feature Request category. The user expresses a need for ease in finding a usable template, indicating a potential gap in the current offerings.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufus0k/need_a_free_template_for_finances_or_budgeting/",
+            "sourceId": "1ufus0k",
+            "originalTitle": "Need a free template for finances or budgeting",
+            "signalScore": 0.5999999999999999,
+            "impactData": {
+              "score": 2.1,
+              "maxScore": 10,
+              "breakdown": {
+                "reach": {
+                  "value": 0,
+                  "weight": 0.4
+                },
+                "sentiment": {
+                  "value": 7,
+                  "weight": 0.3
+                },
+                "velocity": {
+                  "value": 0,
+                  "weight": 0.3
+                }
+              },
+              "rationale": "Score based on standard engagement metrics.",
+              "stakes": {
+                "type": "risk",
+                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+              }
+            }
+          }
+        ],
+        "totalScore": 2.1,
+        "quotes": [
+          "Does any know where to find a free very usable and convenient budgeting template?"
+        ],
+        "segments": {},
+        "frequency": 1,
+        "avgImpact": 2.1,
+        "topQuote": "Does any know where to find a free very usable and convenient budgeting template?",
+        "affectedSegments": [],
+        "stakes": {
+          "type": "risk",
+          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+        },
+        "scoreRationale": "Score based on standard engagement metrics.",
+        "severityLabel": "Medium",
+        "rootCause": "Insufficient template availability and discoverability.",
+        "impactScore": 2.1,
+        "trend": "new",
+        "trendDelta": 0
+      },
+      {
+        "id": "7",
+        "title": "Text Formatting",
         "category": "usability_friction",
         "items": [
           {
@@ -613,26 +537,26 @@
             "category": "Support Question",
             "problemMetadata": {
               "rootCause": "Ease",
-              "featureArea": "Task Management",
+              "featureArea": "Text Formatting",
               "impactType": "Retention",
               "urgencySignal": "Low",
               "prioritization": {
-                "impactScore": 6,
-                "urgencyScore": 4,
+                "impactScore": 5,
+                "urgencyScore": 3,
                 "effortEstimate": 2
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Investigate the possibility of creating a formula for date assignment in task management.",
-              "replyDraft": "Hi there! It's great to see you back in Notion! While there isn't a built-in feature for assigning tasks to specific time frames like Day, Week, or Month, you can definitely create a formula to help with that. I recommend checking out the Notion community for some creative solutions, and feel free to share your progress!",
-              "keyQuote": "I found this app called Bullet (.to) that has an option to assign tasks to a day, a week, a month, or even a year."
+              "actionableInsight": "Prioritize enhancing support resources for text formatting issues in Notion.",
+              "replyDraft": "Hi there! Thanks for reaching out with your question about indentation lines in Notion. It sounds like you're facing some challenges with formatting, and while we currently don't have built-in support for that specific feature, I recommend checking out our help center for tips on text formatting. We're always looking to improve, so your feedback is valuable!",
+              "keyQuote": "I hope to seek help from all the big shots."
             },
             "confidence": 0.85,
-            "reasoning": "The feedback clearly indicates a need for assistance in creating a specific task management system, which falls under the Support Question category. The user is looking for a formula, indicating a usability friction in the current task management capabilities.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uahodj/assign_pages_to_day_week_or_month/",
-            "sourceId": "1uahodj",
-            "originalTitle": "Assign pages to Day, Week, or Month",
+            "reasoning": "The feedback clearly indicates a user struggling with a specific formatting issue, which falls under the Support Question category. The user expresses a desire for help, indicating unmet needs related to ease of use.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufs5ld/a_notion_beginners_question_about_indentation/",
+            "sourceId": "1ufs5ld",
+            "originalTitle": "A Notion beginner's question about indentation lines",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -660,29 +584,29 @@
           },
           {
             "type": "Constructive",
-            "category": "Usability Friction",
+            "category": "Support Question",
             "problemMetadata": {
-              "rootCause": "Ease",
-              "featureArea": "Task Management",
+              "rootCause": "Certainty",
+              "featureArea": "Text Formatting",
               "impactType": "Retention",
               "urgencySignal": "High",
               "prioritization": {
                 "impactScore": 7,
                 "urgencyScore": 8,
-                "effortEstimate": 3
+                "effortEstimate": 2
               }
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Investigate simplifying the task management setup in Notion to enhance user retention and ease of use.",
-              "replyDraft": "Thanks for sharing your experience! It sounds like you're really trying to make Notion work for you, and it's common to hit some bumps along the way. Many users find that starting with simpler setups can help maintain consistency. Have you considered exploring ways to streamline your workflow?",
-              "keyQuote": "I slowly stop updating it and drift back to writing things on paper or using a simpler todo app."
+              "actionableInsight": "Investigate the issue with text formatting loss to improve user reliability and trust in the platform.",
+              "replyDraft": "Hi there! I'm sorry to hear about the trouble with your highlights and colored text disappearing. This sounds frustrating, and I recommend checking if there are any updates or known issues with Notion. If the problem persists, please reach out to our support team for assistance!",
+              "keyQuote": "my highlights were gone and the colored text was reverted back to black."
             },
             "confidence": 0.85,
-            "reasoning": "The feedback indicates a struggle with maintaining a complex setup in Notion, suggesting usability friction. The user expresses a need for simplicity and consistency, which aligns with the root cause of 'Ease'. The impact on retention is significant as users may abandon the tool if it feels too complicated.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1u98ext/how_are_you_actually_using_notion_for_task/",
-            "sourceId": "1u98ext",
-            "originalTitle": "How are you actually using Notion for task management day to day, does it stick?",
+            "reasoning": "The feedback indicates a user experiencing a loss of formatting in their document, which suggests a need for support and clarity on the issue. The user is seeking help, categorizing this as a Support Question. The root cause relates to the user's need for certainty regarding the reliability of text formatting features.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1uejfvy/highlights_and_colored_text_removed/",
+            "sourceId": "1uejfvy",
+            "originalTitle": "Highlights and colored text removed?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -711,28 +635,28 @@
         ],
         "totalScore": 4.2,
         "quotes": [
-          "I found this app called Bullet (.to) that has an option to assign tasks to a day, a week, a month, or even a year.",
-          "I slowly stop updating it and drift back to writing things on paper or using a simpler todo app."
+          "I hope to seek help from all the big shots.",
+          "my highlights were gone and the colored text was reverted back to black."
         ],
         "segments": {},
         "frequency": 2,
         "avgImpact": 2.1,
-        "topQuote": "I found this app called Bullet (.to) that has an option to assign tasks to a day, a week, a month, or even a year.",
+        "topQuote": "wrapping text columns is pretty much pointless now.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
           "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
         },
         "scoreRationale": "Score based on standard engagement metrics.",
-        "severityLabel": "High",
-        "rootCause": "Lack of advanced task management features.",
+        "severityLabel": "Medium",
+        "rootCause": "Inadequate text formatting options.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       },
       {
-        "id": "9",
-        "title": "Content Management",
+        "id": "8",
+        "title": "Web Clipper",
         "category": "usability_friction",
         "items": [
           {
@@ -740,7 +664,7 @@
             "category": "Usability Friction",
             "problemMetadata": {
               "rootCause": "Ease",
-              "featureArea": "Content Management",
+              "featureArea": "Web Clipper",
               "impactType": "Retention",
               "urgencySignal": "High",
               "prioritization": {
@@ -751,15 +675,15 @@
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Prioritize simplifying the process of importing and organizing social media saves into Notion.",
-              "replyDraft": "Thanks for sharing your experience! It sounds like managing saved content can be quite a challenge. We're always looking for ways to improve the user experience, and your insights on the importance of context are invaluable. Have you tried any specific features in Notion that help with this?",
-              "keyQuote": "When I dump saves into Notion I get overwhelmed fast unless each entry has a short 'why I saved this' property."
+              "actionableInsight": "Prioritize fixing the web clipper login issues to enhance user experience and retention.",
+              "replyDraft": "Hi there! We're sorry to hear that you're having trouble with the web clipper and browser login. Your experience is important to us, and we're actively working on resolving these issues. Thank you for your patience!",
+              "keyQuote": "the web clipper isn't working. It always asks to login, even if I am."
             },
-            "confidence": 0.85,
-            "reasoning": "The feedback clearly identifies a usability issue with the current process of importing content into Notion, highlighting the need for simplification and better organization. The user expresses a struggle with overwhelming content management, indicating a need for improved usability.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ua8qsu/anyone_else_have_a_graveyard_of_saved_posts_that/",
-            "sourceId": "1ua8qsu",
-            "originalTitle": "Anyone else have a graveyard of saved posts that never make it into Notion?",
+            "confidence": 0.95,
+            "reasoning": "The feedback clearly indicates a usability issue with the web clipper and browser login process, which affects user experience and could lead to retention problems. The user expresses frustration with the need to log in repeatedly, indicating unmet needs for ease and reliability.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufq3h5/is_web_clipper_or_browser_use_dead/",
+            "sourceId": "1ufq3h5",
+            "originalTitle": "Is web clipper or browser use dead?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -788,12 +712,12 @@
         ],
         "totalScore": 2.1,
         "quotes": [
-          "When I dump saves into Notion I get overwhelmed fast unless each entry has a short 'why I saved this' property."
+          "the web clipper isn't working. It always asks to login, even if I am."
         ],
         "segments": {},
         "frequency": 1,
         "avgImpact": 2.1,
-        "topQuote": "When I dump saves into Notion I get overwhelmed fast unless each entry has a short 'why I saved this' property.",
+        "topQuote": "the web clipper isn't working. It always asks to login, even if I am.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
@@ -801,23 +725,23 @@
         },
         "scoreRationale": "Score based on standard engagement metrics.",
         "severityLabel": "Medium",
-        "rootCause": "Overwhelming content management without clear organization tools.",
+        "rootCause": "Persistent login issues and functionality errors.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       },
       {
-        "id": "10",
-        "title": "Integrations",
+        "id": "9",
+        "title": "Mobile App",
         "category": "usability_friction",
         "items": [
           {
             "type": "Constructive",
-            "category": "Support Question",
+            "category": "Usability Friction",
             "problemMetadata": {
               "rootCause": "Ease",
-              "featureArea": "Integrations",
-              "impactType": "Cost to Serve",
+              "featureArea": "Mobile App",
+              "impactType": "Retention",
               "urgencySignal": "High",
               "prioritization": {
                 "impactScore": 7,
@@ -827,15 +751,15 @@
             },
             "delightMetadata": null,
             "summary": {
-              "actionableInsight": "Investigate integration options for ticketing systems within Notion to streamline user requests and responses.",
-              "replyDraft": "Hi there! It sounds like you're facing some challenges with managing your ticketing system in Notion. While we currently don't have a direct integration for email conversations, I recommend exploring third-party tools that can connect with Notion to simplify this process. If you have any specific tools in mind, feel free to share, and we can help brainstorm solutions!",
-              "keyQuote": "We just don't know how to connect it all."
+              "actionableInsight": "Prioritize improving the mobile app's quick capture functionality to enhance user experience.",
+              "replyDraft": "Thanks for sharing your thoughts! It's great to hear how much you love using Notion on desktop. We understand that quick capture on mobile can feel awkward, and we're always looking for ways to improve that experience. Your feedback is valuable, and we'll take it into consideration as we work on future updates!",
+              "keyQuote": "Notion feels amazing once everything is organized inside it, but getting small things into it quickly from mobile still feels a bit awkward."
             },
             "confidence": 0.85,
-            "reasoning": "The feedback clearly indicates a struggle with integrating email conversations into Notion, which falls under a support question. The user is seeking help and tips, indicating a need for ease in their workflow.",
-            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ua48wr/ticketing_system/",
-            "sourceId": "1ua48wr",
-            "originalTitle": "Ticketing system",
+            "reasoning": "The feedback clearly indicates a struggle with the mobile app's usability for quick capture, which falls under usability friction. The user expresses a need for a more efficient way to input quick thoughts or tasks, indicating unmet needs for ease of use.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufmn9d/is_notion_mobile_actually_part_of_your_workflow/",
+            "sourceId": "1ufmn9d",
+            "originalTitle": "Is Notion mobile actually part of your workflow, or just desktop?",
             "signalScore": 0.5999999999999999,
             "impactData": {
               "score": 2.1,
@@ -864,12 +788,12 @@
         ],
         "totalScore": 2.1,
         "quotes": [
-          "We just don't know how to connect it all."
+          "Notion feels amazing once everything is organized inside it, but getting small things into it quickly from mobile still feels a bit awkward."
         ],
         "segments": {},
         "frequency": 1,
         "avgImpact": 2.1,
-        "topQuote": "We just don't know how to connect it all.",
+        "topQuote": "Notion feels amazing once everything is organized inside it, but getting small things into it quickly from mobile still feels a bit awkward.",
         "affectedSegments": [],
         "stakes": {
           "type": "risk",
@@ -877,183 +801,254 @@
         },
         "scoreRationale": "Score based on standard engagement metrics.",
         "severityLabel": "Medium",
-        "rootCause": "Insufficient integration capabilities with other tools.",
+        "rootCause": "Cumbersome mobile interface and input methods.",
+        "impactScore": 2.1,
+        "trend": "new",
+        "trendDelta": 0
+      },
+      {
+        "id": "10",
+        "title": "Email Integration",
+        "category": "feature_request",
+        "items": [
+          {
+            "type": "Constructive",
+            "category": "Feature Request",
+            "problemMetadata": {
+              "rootCause": "Integration",
+              "featureArea": "Email Integration",
+              "impactType": "Retention",
+              "urgencySignal": "High",
+              "prioritization": {
+                "impactScore": 8,
+                "urgencyScore": 9,
+                "effortEstimate": 3
+              }
+            },
+            "delightMetadata": null,
+            "summary": {
+              "actionableInsight": "Prioritize developing an integration feature that allows users to label Gmail emails and automatically transfer them to Notion databases.",
+              "replyDraft": "Hi there! We appreciate your feedback on the need for better email integration with Notion. We're always looking for ways to enhance our features, and your suggestion about Gmail labels is a great idea. Stay tuned for updates!",
+              "keyQuote": "What I really want is to put a Gmail label on an email in my Inbox and have it go to the appropriate Notion database."
+            },
+            "confidence": 0.95,
+            "reasoning": "The feedback clearly expresses a desire for a new feature that integrates Gmail with Notion, indicating a need for better functionality and user retention. The urgency and impact scores reflect the importance of this request.",
+            "sourceUrl": "https://www.reddit.com/r/Notion/comments/1ufh8eu/notion_mail_alternative/",
+            "sourceId": "1ufh8eu",
+            "originalTitle": "Notion Mail Alternative",
+            "signalScore": 0.5999999999999999,
+            "impactData": {
+              "score": 2.1,
+              "maxScore": 10,
+              "breakdown": {
+                "reach": {
+                  "value": 0,
+                  "weight": 0.4
+                },
+                "sentiment": {
+                  "value": 7,
+                  "weight": 0.3
+                },
+                "velocity": {
+                  "value": 0,
+                  "weight": 0.3
+                }
+              },
+              "rationale": "Score based on standard engagement metrics.",
+              "stakes": {
+                "type": "risk",
+                "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+              }
+            }
+          }
+        ],
+        "totalScore": 2.1,
+        "quotes": [
+          "What I really want is to put a Gmail label on an email in my Inbox and have it go to the appropriate Notion database."
+        ],
+        "segments": {},
+        "frequency": 1,
+        "avgImpact": 2.1,
+        "topQuote": "What I really want is to put a Gmail label on an email in my Inbox and have it go to the appropriate Notion database.",
+        "affectedSegments": [],
+        "stakes": {
+          "type": "risk",
+          "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+        },
+        "scoreRationale": "Score based on standard engagement metrics.",
+        "severityLabel": "Medium",
+        "rootCause": "Lack of email integration features.",
         "impactScore": 2.1,
         "trend": "new",
         "trendDelta": 0
       }
     ],
     "brandStrengths": {
-      "overallScore": 6.5,
+      "overallScore": 7.5,
       "topLoves": [
         {
-          "feature": "Flexibility",
-          "quote": "I have a few different databases right now and want a master database to manage the items both in their separate databases as well as together.",
+          "feature": "Organizational Capabilities",
+          "quote": "Notion feels amazing once everything is organized inside it.",
           "shareability": 8
         },
         {
-          "feature": "Potential for Customization",
-          "quote": "It'd be really nice if there's a way to change its color!",
+          "feature": "Customizability",
+          "quote": "I keep hitting the same wall. I build something nice...",
           "shareability": 7
-        },
-        {
-          "feature": "Comprehensive Features",
-          "quote": "Anyone have a good reading tracker?",
-          "shareability": 6
         }
       ],
       "brandPersonality": [
         "Innovative",
-        "Versatile",
+        "Flexible",
         "Complex"
       ]
     },
     "suggestedOKRs": [
       {
-        "theme": "Improve Usability",
-        "objective": "Enhance the stability and usability of core features.",
+        "theme": "Enhancing Usability",
+        "objective": "Improve user interface simplicity and navigation efficiency.",
         "keyResults": [
-          "Reduce app crash reports by 50% by end of Q2.",
-          "Resolve 80% of reported text formatting bugs by Q2.",
-          "Improve Notion Mail load times by 30% by Q2."
+          "Redesign sidebar navigation to enhance user experience by Q2.",
+          "Simplify login/authentication process to reduce user complaints by 50% by Q2.",
+          "Improve text formatting options to increase user satisfaction by 30% by Q2."
         ],
         "timeframe": "Q2"
       },
       {
-        "theme": "Expand Customization",
-        "objective": "Increase user interface customization options.",
+        "theme": "Integration Expansion",
+        "objective": "Expand integration capabilities with external applications.",
         "keyResults": [
-          "Implement color customization for key interface elements by Q3.",
-          "Introduce customizable layout options by Q3.",
-          "Gather user feedback on new customization features with 80% positive response by Q3."
+          "Develop and launch integration with top 3 requested external apps by Q3.",
+          "Implement email integration feature to increase user engagement by 20% by Q3.",
+          "Enhance web clipper reliability to reduce login issues by 70% by Q3."
         ],
         "timeframe": "Q3"
       },
       {
-        "theme": "Enhance Integration Capabilities",
-        "objective": "Improve integration with third-party tools.",
+        "theme": "Feature Enrichment",
+        "objective": "Increase the availability and discoverability of templates.",
         "keyResults": [
-          "Launch 3 new integrations with popular productivity tools by Q4.",
-          "Increase user satisfaction with integrations by 20% by Q4.",
-          "Conduct a user survey to identify top desired integrations by Q3."
+          "Create and promote 10 new templates by Q2.",
+          "Improve template search functionality to increase usage by 40% by Q2.",
+          "Conduct user feedback sessions to refine template offerings by Q2."
         ],
-        "timeframe": "Q4"
+        "timeframe": "Q2"
       }
     ],
     "priorityMatrix": [
       {
-        "title": "AI Assistance",
+        "title": "Calendar View",
         "category": "usability_friction",
         "impactScore": 2.1,
-        "effortEstimate": "Quick Win",
-        "quadrant": "Quick Wins",
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
         "frequency": 1
       },
       {
-        "title": "Customization Options",
+        "title": "Linking with External Apps",
+        "category": "usability_friction",
+        "impactScore": 2.1,
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
+        "frequency": 1
+      },
+      {
+        "title": "User Interface",
+        "category": "usability_friction",
+        "impactScore": 2.1,
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
+        "frequency": 2
+      },
+      {
+        "title": "Sidebar Navigation",
+        "category": "usability_friction",
+        "impactScore": 2.1,
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
+        "frequency": 1
+      },
+      {
+        "title": "Login/Authentication",
+        "category": "usability_friction",
+        "impactScore": 2.1,
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
+        "frequency": 1
+      },
+      {
+        "title": "Templates",
         "category": "feature_request",
         "impactScore": 2.1,
         "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
+        "quadrant": "Fill-ins",
         "frequency": 1
       },
       {
-        "title": "App Stability",
+        "title": "Text Formatting",
         "category": "usability_friction",
         "impactScore": 2.1,
         "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
-        "frequency": 1
-      },
-      {
-        "title": "Calendar Management",
-        "category": "usability_friction",
-        "impactScore": 2.1,
-        "effortEstimate": "Quick Win",
-        "quadrant": "Quick Wins",
-        "frequency": 1
-      },
-      {
-        "title": "Pinned Properties",
-        "category": "usability_friction",
-        "impactScore": 2.1,
-        "effortEstimate": "Quick Win",
-        "quadrant": "Quick Wins",
-        "frequency": 1
-      },
-      {
-        "title": "Text Formatting Menu",
-        "category": "usability_friction",
-        "impactScore": 2.1,
-        "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
-        "frequency": 1
-      },
-      {
-        "title": "Notion Mail",
-        "category": "usability_friction",
-        "impactScore": 2.1,
-        "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
+        "quadrant": "Fill-ins",
         "frequency": 2
       },
       {
-        "title": "Task Management",
+        "title": "Web Clipper",
         "category": "usability_friction",
         "impactScore": 2.1,
         "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
-        "frequency": 2
-      },
-      {
-        "title": "Content Management",
-        "category": "usability_friction",
-        "impactScore": 2.1,
-        "effortEstimate": "Quick Win",
-        "quadrant": "Quick Wins",
+        "quadrant": "Fill-ins",
         "frequency": 1
       },
       {
-        "title": "Integrations",
+        "title": "Mobile App",
         "category": "usability_friction",
         "impactScore": 2.1,
         "effortEstimate": "Medium",
-        "quadrant": "Strategic Investments",
+        "quadrant": "Fill-ins",
+        "frequency": 1
+      },
+      {
+        "title": "Email Integration",
+        "category": "feature_request",
+        "impactScore": 2.1,
+        "effortEstimate": "Medium",
+        "quadrant": "Fill-ins",
         "frequency": 1
       }
     ],
     "expectationGaps": [
       {
-        "expectation": "AI assistance should be unlimited and intuitive.",
-        "reality": "Users are unclear about AI capabilities and limitations.",
+        "expectation": "Seamless integration with external apps.",
+        "reality": "Limited integration capabilities.",
+        "gapSeverity": "High",
+        "suggestedFix": "Develop APIs for popular third-party apps."
+      },
+      {
+        "expectation": "Simple and intuitive user interface.",
+        "reality": "Complex and cumbersome navigation.",
+        "gapSeverity": "High",
+        "suggestedFix": "Redesign UI focusing on simplicity and ease of use."
+      },
+      {
+        "expectation": "Reliable web clipper functionality.",
+        "reality": "Frequent login issues and errors.",
         "gapSeverity": "Medium",
-        "suggestedFix": "Provide clear documentation and tutorials on AI features."
-      },
-      {
-        "expectation": "The app should be stable and reliable.",
-        "reality": "Frequent crashes and errors reported.",
-        "gapSeverity": "High",
-        "suggestedFix": "Conduct a thorough review and optimization of app stability."
-      },
-      {
-        "expectation": "Customization options should be extensive.",
-        "reality": "Limited customization available, leading to user frustration.",
-        "gapSeverity": "High",
-        "suggestedFix": "Expand customization features to include color and layout options."
+        "suggestedFix": "Enhance web clipper stability and login process."
       }
     ],
     "metadata": {
       "totalAnalyzed": 50,
-      "highSignalCount": 23,
-      "noiseFiltered": 27,
+      "highSignalCount": 31,
+      "noiseFiltered": 19,
       "dataSources": [
         "Reddit"
       ],
-      "analysisDate": "2026-06-21T00:55:13.238Z"
+      "analysisDate": "2026-06-26T21:18:11.924Z"
     },
     "rawScores": [
       {
-        "id": "1uban65",
+        "id": "1ugdjsz",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1079,7 +1074,7 @@
         }
       },
       {
-        "id": "1ub9dtf",
+        "id": "1ugc4b1",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1105,7 +1100,7 @@
         }
       },
       {
-        "id": "1ub54vv",
+        "id": "1ug9tgm",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1131,7 +1126,7 @@
         }
       },
       {
-        "id": "1ub2mg7",
+        "id": "1ug6e3a",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1157,7 +1152,7 @@
         }
       },
       {
-        "id": "1uavfz6",
+        "id": "1ug1i8o",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1183,7 +1178,7 @@
         }
       },
       {
-        "id": "1uasym4",
+        "id": "1ufx4d8",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1209,7 +1204,7 @@
         }
       },
       {
-        "id": "1uaox4b",
+        "id": "1ufus0k",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1235,7 +1230,7 @@
         }
       },
       {
-        "id": "1uahodj",
+        "id": "1ufs5ld",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1261,7 +1256,7 @@
         }
       },
       {
-        "id": "1ua8qsu",
+        "id": "1ufq3h5",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1287,7 +1282,7 @@
         }
       },
       {
-        "id": "1ua48wr",
+        "id": "1ufmn9d",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1313,7 +1308,7 @@
         }
       },
       {
-        "id": "1ua1m1b",
+        "id": "1ufh8eu",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1339,7 +1334,7 @@
         }
       },
       {
-        "id": "1u9yl55",
+        "id": "1ufh3j7",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1365,7 +1360,7 @@
         }
       },
       {
-        "id": "1u9vfk3",
+        "id": "1uff5fx",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1391,7 +1386,7 @@
         }
       },
       {
-        "id": "1u9tc3k",
+        "id": "1ufasjl",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1417,7 +1412,7 @@
         }
       },
       {
-        "id": "1u9qtj7",
+        "id": "1uf571i",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1443,7 +1438,7 @@
         }
       },
       {
-        "id": "1u9hz5z",
+        "id": "1uex2py",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1469,7 +1464,7 @@
         }
       },
       {
-        "id": "1u9dv3f",
+        "id": "1uesdq5",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1495,7 +1490,7 @@
         }
       },
       {
-        "id": "1u9abqc",
+        "id": "1uerv16",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1521,7 +1516,7 @@
         }
       },
       {
-        "id": "1u98ext",
+        "id": "1ueonp8",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1547,7 +1542,7 @@
         }
       },
       {
-        "id": "1u95oul",
+        "id": "1uekv7f",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1573,7 +1568,7 @@
         }
       },
       {
-        "id": "1u94ut4",
+        "id": "1uejfvy",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1599,7 +1594,7 @@
         }
       },
       {
-        "id": "1u938wh",
+        "id": "1uefxie",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1625,7 +1620,215 @@
         }
       },
       {
-        "id": "1u92yrs",
+        "id": "1uebsc2",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1ue96e5",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1ue8fhx",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1ue6qom",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1ue4jn1",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1udzmw4",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1udt6dk",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1udoqqg",
+        "impactData": {
+          "score": 2.1,
+          "maxScore": 10,
+          "breakdown": {
+            "reach": {
+              "value": 0,
+              "weight": 0.4
+            },
+            "sentiment": {
+              "value": 7,
+              "weight": 0.3
+            },
+            "velocity": {
+              "value": 0,
+              "weight": 0.3
+            }
+          },
+          "rationale": "Score based on standard engagement metrics.",
+          "stakes": {
+            "type": "risk",
+            "message": "Risk if ignored: Continued user frustration, possible support ticket increase."
+          }
+        }
+      },
+      {
+        "id": "1udiw4r",
         "impactData": {
           "score": 2.1,
           "maxScore": 10,
@@ -1661,5 +1864,5 @@
     "created_by": "terminal_scout",
     "version": "2.0"
   },
-  "lastUpdated": "2026-06-21T00:55:13.238Z"
+  "lastUpdated": "2026-06-26T21:18:11.925Z"
 }

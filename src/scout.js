@@ -336,6 +336,8 @@ async function main() {
 
   try {
     await scout(args.companyName, args.tenantId);
+    // Exit after scraping is completed with success code
+    process.exit(0);
   } catch (error) {
     console.error('Scout failed:', error);
     process.exit(1);

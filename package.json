@@ -24,7 +24,7 @@
   "license": "ISC",
   "dependencies": {
     "@langchain/core": "^1.1.8",
-    "@langchain/openai": "^1.5.5",
+    "@langchain/openai": "^1.5.10",
     "@supabase/supabase-js": "^2.110.1",
     "apify-client": "^2.25.0",
     "dotenv": "^17.4.2",
